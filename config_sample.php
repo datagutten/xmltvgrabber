@@ -1,0 +1,3 @@
+<?Php
+$outpath='/home/tv';
+?>
