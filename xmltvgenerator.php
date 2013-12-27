@@ -20,10 +20,14 @@ class xmltvgenerator
 		if($stop!==false)
 			$programme->addAttribute('stop',date('YmdHis O',$stop));
 		$programme->addAttribute('channel',$this->channel);
+		$programtitle=str_replace('&','&amp;',$programtitle);
 		$title=$programme->addChild('title',$programtitle);
 		$title->addAttribute('lang',$this->lang);
-		$desc=$programme->addChild('desc',$description);
-		$desc->addAttribute('lang',$this->lang);
+		if(!empty($description))
+		{
+			$desc=$programme->addChild('desc',$description);
+			$desc->addAttribute('lang',$this->lang);
+		}
 		return $programme;
 	}
 	function episodeinfo($programme,$season,$current,$total=false,$onscreen=false)
@@ -55,6 +59,6 @@ class xmltvgenerator
 	function writefile($channel,$date)
 	{
 		$ymd=date('Y-m-d',$date);
-		file_put_contents($this->outpath."/$channel/{$channel}_$ymd.xml",$this->output());
+		file_put_contents($this->outpath."$channel/{$channel}_$ymd.xml",$this->output());
 	}
 }
