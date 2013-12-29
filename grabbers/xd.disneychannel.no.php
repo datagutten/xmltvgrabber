@@ -27,9 +27,8 @@ foreach($xml->SCHEDULE as $day)
 		//print_r($slot);
 		//var_dump($slot['prog']);
 	}
-	$xmltv->writefile('xd.disneychannel.no',$timestamp);
-	echo date('Y-m-d',$timestamp)."\n";
+	$filename=$xmltv->savefile($timestamp);
+	echo "$filename\n";
 	unset($xmltv);
-	//print_r($week->DAY);
-	//break;
 }
+?>

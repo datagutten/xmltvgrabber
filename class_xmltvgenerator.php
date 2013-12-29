@@ -58,9 +58,12 @@ class xmltvgenerator extends core
 		$dom->loadXML($this->xml->asXML());
 		return $dom->saveXML();
 	}
-	function writefile($channel,$date)
+	function savefile($timestamp)
 	{
-		$ymd=date('Y-m-d',$date);
-		file_put_contents($this->outpath."$channel/{$channel}_$ymd.xml",$this->output());
+		$folder=$this->foldername($this->channel,'xmltv',$timestamp);
+		$ymd=date('Y-m-d',$timestamp);
+		file_put_contents($filename=$folder."{$this->channel}_$ymd.xml",$this->output());
+		return $filename;
 	}
 }
+?>

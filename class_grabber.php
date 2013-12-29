@@ -1,5 +1,5 @@
 <?Php
-//require_once 'class_core.php';
+require_once 'class_core.php';
 require_once __DIR__.'/class_core.php';
 class grabber extends core
 {
@@ -8,13 +8,12 @@ class grabber extends core
 		$data=file_get_contents($url);
 		if($timestamp===false)
 			$timestamp=strtotime('midnight');
-		$path=$this->foldername($channel,'rawdata',$timestamp);
-		var_dump($path.$this->filename($channel,$timestamp,$extension));
-		if(!file_exists($path))
-			mkdir($path,0777,true);
-	
-		file_put_contents($file="$path/".$channel.'_'.$timestamp.'.'.$extension,$data);
-		echo $file."\n";
+
+		$file=$this->fullpath($channel,'rawdata',$timestamp,$extension);
+		if(!file_exists($dirname=dirname($file)))
+			mkdir($dirname,0777,true);
+
+		file_put_contents($file,$data);
 		return $data;
 	}
 	public function getlocalfile($channel,$extension,$timestamp)

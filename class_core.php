@@ -21,9 +21,9 @@ class core
 	}
 	public function filename($channel,$timestamp,$extension)
 	{
-		return $channel.'_'.date('Y-m-d_H-i',$timestamp).'.'.$extension;
+		return $channel.'_'.date('Y-m-d',$timestamp).'.'.$extension;
 	}
-	public function outfile($channel,$subfolder,$timestamp,$extension)
+	public function fullpath($channel,$subfolder,$timestamp,$extension)
 	{
 		return $this->foldername($channel,$subfolder,$timestamp).$this->filename($channel,$timestamp,$extension);	
 	}
