@@ -1,12 +1,11 @@
 <?php
-require '../class.php';
+require_once '../class_grabber.php';
 
 if(isset($argv[1]))
 	$timestamp=strtotime($argv[1]);
 else
 	$timestamp=strtotime('today');
 	
-require_once '../class.php';
 $grabber=new grabber;
 
 $data=$grabber->download('http://www.disney.no/DisneyChannel/binary/tvguide/tdc.xml','disneychannel.no','xml',$timestamp);

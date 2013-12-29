@@ -1,5 +1,7 @@
 <?Php
-class xmltvgenerator
+//require_once 'class_core.php';
+require_once __DIR__.'class_core.php';
+class xmltvgenerator extends core
 {
 	public $channel;
 	public $lang;

@@ -1,11 +1,12 @@
 <?Php
-require '../xmltvgenerator.php';
-require '../class.php';
+require_once '../class_xmltvgenerator.php';
+require_once '../class_grabber.php';
 
 if(isset($argv[1]))
 	$timestamp=strtotime($argv[1]);
 else
 	$timestamp=strtotime('today');
+
 $grabber=new grabber;
 
 $urldate=date('dmy',$timestamp);
