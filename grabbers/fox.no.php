@@ -32,7 +32,13 @@ foreach($matches[0] as $program)
 	$episodetext=trim($spans->item(1)->textContent);
 	$episodetitle=$spans->item(2)->textContent;
 
-	$programme=$xmltv->program($title,$episodetitle,strtotime($starttime,$timestamp));
+	$starttimestamp_temp=strtotime($starttime,$timestamp);
+	if(isset($starttimestamp) && $starttimestamp_temp<$starttimestamp)
+		$starttimestamp=$starttimestamp_temp+86400; //If the current time is earlier than the previous, increase the date
+	else
+		$starttimestamp=$starttimestamp_temp;
+
+	$programme=$xmltv->program($title,$episodetitle,$starttimestamp);
 	if(preg_match('/Sesong ([0-9]+) episode ([0-9]+)/',$episodetext,$seasonepisode))
 		$xmltv->episodeinfo($programme,$seasonepisode[1],$seasonepisode[2],false,$episodetext);
 }
