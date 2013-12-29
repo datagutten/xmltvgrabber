@@ -1,6 +1,6 @@
 <?Php
 //require_once 'class_core.php';
-require_once __DIR__.'class_core.php';
+require_once __DIR__.'/class_core.php';
 class grabber extends core
 {
 	public function download($url,$channel,$extension,$timestamp=false) //Download and save the original data
