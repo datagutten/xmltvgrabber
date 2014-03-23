@@ -8,7 +8,7 @@ else
 	$timestamp=strtotime('today');
 
 $grabber=new grabber;
-$xmltv=new xmltvgenerator('natgeo.no','nb',$grabber->outpath);
+$xmltv=new xmltvgenerator('natgeo.no','nb');
 
 $urldate=date('dmy',$timestamp);
 $ymd=date('Y-m-d',$timestamp);

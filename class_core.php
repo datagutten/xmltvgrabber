@@ -2,12 +2,14 @@
 class core
 {
 	public $outpath;
+	public $subfolder;
 	public function __construct()
 	{
 		require 'config.php';
 		if(substr($outpath,-1,1)!='/')
 			$outpath.='/';
 		$this->outpath=$outpath;
+		$this->subfolder=$subfolder;
 	}
 	public function foldername($channel,$subfolder,$timestamp=false)
 	{

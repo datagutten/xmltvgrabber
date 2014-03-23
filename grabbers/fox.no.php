@@ -8,7 +8,7 @@ else
 	$timestamp=strtotime('today');
 
 $grabber=new grabber;
-$xmltv=new xmltvgenerator('fox.no','nb',$grabber->outpath);
+$xmltv=new xmltvgenerator('fox.no','nb');
 $dom=new DOMDocument;
 
 $urldate=date('dmy',$timestamp);

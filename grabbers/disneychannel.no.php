@@ -24,7 +24,7 @@ foreach($xml->SCHEDULE as $week)
 	$timestamp_week=strtotime($startdate);
 	foreach($week->DAY as $day)
 	{
-		$xmltv=new xmltvgenerator(channel,'nb',$grabber->outpath);
+		$xmltv=new xmltvgenerator(channel,'nb');
 		$dayinfo=$day->attributes();
 		$timestamp_day=strtotime($dayinfo['name'],$timestamp_week);
 		foreach($day->SLOT as $slot)

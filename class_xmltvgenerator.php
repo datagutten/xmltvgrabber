@@ -5,15 +5,14 @@ class xmltvgenerator extends core
 {
 	public $channel;
 	public $lang;
-	public $outpath;
 
-	function __construct($channel,$lang,$outpath)
+	function __construct($channel,$lang)
 	{
+		parent::__construct();
 		$this->xml=new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tv SYSTEM "xmltv.dtd"><tv generator-info-name="quadepg"/>');
 		$this->channel=$channel;
 		$this->lang=$lang;
-		$this->outpath=$outpath;
 	}
 	function program($programtitle,$description,$start,$stop=false)
 	{
@@ -61,7 +60,7 @@ class xmltvgenerator extends core
 	}
 	function savefile($timestamp)
 	{
-		$folder=$this->foldername($this->channel,'xmltv',$timestamp);
+		$folder=$this->foldername($this->channel,$this->subfolder,$timestamp);
 		$ymd=date('Y-m-d',$timestamp);
 		file_put_contents($filename=$folder."{$this->channel}_$ymd.xml",$this->output());
 		return $filename;

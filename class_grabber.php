@@ -18,9 +18,7 @@ class grabber extends core
 	}
 	public function getlocalfile($channel,$extension,$timestamp)
 	{
-		$path=$this->foldername($channel,'rawdata',$timestamp);
-		//$path=$this->outpath."rawdata/$channel/".date('Y',$timestamp).'/';
-		$file=$path.$channel.'_'.$timestamp.'.'.$extension;
+		$file=$this->fullpath($channel,'rawdata',$timestamp,$extension);
 		if(file_exists($file))
 			return file_get_contents($file);
 		else
