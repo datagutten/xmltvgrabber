@@ -27,6 +27,7 @@ class xmltvgenerator extends core
 		$title->addAttribute('lang',$this->lang);
 		if(!empty($description))
 		{
+			$description=str_replace('&','&amp;',$description);
 			$desc=$programme->addChild('desc',$description);
 			$desc->addAttribute('lang',$this->lang);
 		}
