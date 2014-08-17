@@ -34,7 +34,9 @@ class xmltvgenerator extends core
 	}
 	function episodeinfo($programme,$season,$current,$total=false,$onscreen=false)
 	{
-		$xmltv_ns=$season-1;
+		$xmltv_ns='';
+		if($season!==false)
+			$xmltv_ns.=$season-1;
 		$xmltv_ns.='.';
 		$xmltv_ns.=$current-1;
 		if($total!==false)
