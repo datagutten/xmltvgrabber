@@ -6,6 +6,11 @@ class core
 	public function __construct()
 	{
 		require 'config.php';
+		if(!isset($outpath))
+			trigger_error("Missing outpath in config file",E_USER_ERROR);
+		if(!isset($subfolder))
+			trigger_error("Missing subfolder in config file",E_USER_ERROR);
+
 		if(substr($outpath,-1,1)!='/')
 			$outpath.='/';
 		$this->outpath=$outpath;
