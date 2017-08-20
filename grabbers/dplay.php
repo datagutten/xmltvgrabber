@@ -7,7 +7,7 @@ if(isset($argv[1]))
 else
 	$timestamp=strtotime('today');
 
-$channels=array('tvnorge.no'=>'TVNorge','fem.no'=>'FEM','max.no'=>'MAX','vox.no'=>'VOX','eurosport.no'=>'Eurosport Norge','animalplanet.discovery.no'=>'Animal Planet','tlc.discovery.no'=>'TLC','discovery.no'=>'Discovery Channel','investigation.discovery.no'=>'Investigation Discovery','science.discovery.no'=>'Discovery Science','world.discovery.no'=>'Discovery World','hd.discovery.no'=>'Discovery HD Showcase');
+$channels=array('tvnorge.no'=>'TVNorge','fem.no'=>'FEM','max.no'=>'MAX','voxtv.no'=>'VOX','eurosport.no'=>'Eurosport Norge','animalplanet.discovery.no'=>'Animal Planet','tlc.discovery.no'=>'TLC','discovery.no'=>'Discovery Channel','investigation.discovery.no'=>'Investigation Discovery','science.discovery.no'=>'Discovery Science','world.discovery.no'=>'Discovery World','hd.discovery.no'=>'Discovery HD Showcase');
 
 $grabber=new grabber;
 
