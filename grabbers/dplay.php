@@ -13,7 +13,7 @@ $grabber=new grabber;
 
 //$data=$grabber->download('http://www.tvnorge.no/tv-guide?d='.$urldate,'tvnorge.no','htm',$timestamp);
 //$prevdata=$grabber->download('http://www.tvnorge.no/tv-guide?d='.date('dmY',$prevday),'tvnorge.no','htm',$prevday);
-$url_template='http://web.tvnorge.no/discovery_epg/epg_feed/dplayepg/?channel=%s&date=%s';
+$url_template='http://epg.dnnservice.no/dplayepg/?channel=%s&date=%s';
 
 foreach($channels as $channel_id=>$channel)
 {
