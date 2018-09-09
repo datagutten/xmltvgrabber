@@ -10,7 +10,7 @@ class xmltvgenerator extends core
 	{
 		parent::__construct();
 		$this->xml=new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE tv SYSTEM "xmltv.dtd"><tv generator-info-name="quadepg"/>');
+<!DOCTYPE tv SYSTEM "xmltv.dtd"><tv generator-info-name="php-xmltvgrabber"/>');
 		$this->channel=$channel;
 		$this->lang=$lang;
 	}
@@ -54,6 +54,8 @@ class xmltvgenerator extends core
 	}
 	function output()
 	{
+		if(empty($this->xml->programme))
+			return false;
 		$dom = new DOMDocument('1.0');
 		$dom->preserveWhiteSpace = false;
 		$dom->formatOutput = true;
@@ -62,9 +64,12 @@ class xmltvgenerator extends core
 	}
 	function savefile($timestamp)
 	{
+		$xml_string=$this->output();
+		if($xml_string===false)
+			return false;
 		$folder=$this->foldername($this->channel,$this->subfolder,$timestamp);
 		$ymd=date('Y-m-d',$timestamp);
-		file_put_contents($filename=$folder."{$this->channel}_$ymd.xml",$this->output());
+		file_put_contents($filename=$folder."{$this->channel}_$ymd.xml",$xml_string);
 		return $filename;
 	}
 }
