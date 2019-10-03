@@ -9,39 +9,79 @@ else
 
 $grabber=new grabber;
 $xmltv=new xmltvgenerator('natgeo.no','nb');
+$dom=new DOMDocument;
 
-$urldate=date('dmy',$timestamp);
+$urldate=date('Ymd',$timestamp);
 $ymd=date('Y-m-d',$timestamp);
 
-$data=$grabber->download('http://natgeotv.com/no/listings/ngc/'.$urldate,'natgeo.no','htm',$timestamp);
+$data=$grabber->download($url='http://www.natgeotv.com/no/tvguide/natgeo/'.$urldate,'natgeo.no','htm',$timestamp);
+@$dom->loadHTML($data);
+$days=$dom->getElementById('scheduleDays');
+//$startday=substr($days->textContent,0,5);
 
-$outfile='/mnt/web/tv/natgeo.no/natgeo.no_'.date('Y-m-d',$timestamp).'.xml';
+//print_r($dom->getElementById('scheduleDays')->getelementsbytagname('a')->item(0)->getAttribute('href'));
+//die();
+preg_match('/[0-9]+/',$dom->getElementById('scheduleDays')->textContent,$startday);
+//print_r($startday);
+$startday=$startday[0];
 
-preg_match_all('^ScheduleDayRow.+ScheduleDayHour"\>([0-9]+:[0-9]+)\<.+/ul^Us',$data,$result);
-	
-foreach ($result[0] as $key=>$program)
+if($startday>date('j',$timestamp)) //First day is in previous month
+	$startdate=sprintf('%d-%02d-%02d',date('Y',$timestamp),date('m')-1,$startday);
+else
+	$startdate=sprintf('%s-%02d',date('Y-m'),$startday);
+
+$ul=$dom->getelementsbytagname('ul');
+foreach ($ul as $day)
 {
-	if(preg_match('^\<span class=.Bold.+/span\>^',$program,$title))
-	{
-		$title=strip_tags($title[0]);
-		$title=str_replace('&','&amp;',$title);
-		echo $result[1][$key].' '.$title."\n";
-		$starttime=str_replace(':','',$result[1][$key]);
-		$starttimestamp_temp=strtotime($ymd.' '.$result[1][$key]);
-		if(isset($starttimestamp) && $starttimestamp_temp<$starttimestamp)
-			$starttimestamp=$starttimestamp_temp+86400; //If the current time is earlier than the previous, increase the date
-		else
-			$starttimestamp=$starttimestamp_temp;
-	
-		if(isset($result[1][$key+1]))
-			$stoptime=str_replace(':','',$result[1][$key+1]);
-		else
-			$stoptime='';
+	if($day->childNodes->length<5)
+		continue;
+	if(substr($day->childNodes->item(0)->textContent,0,2)!='N'.chr(0xc3))
+		continue;
 
-		$programme=$xmltv->program($title,'',$starttimestamp);
+    /**
+     * @var $program DOMElement
+     */
+	foreach($day->childNodes as $program)
+	{
+		//$starttime=$program->childNodes->item(0)->childNodes->item(1)->textContent;
+
+		$date=$program->getattribute('data-datetime-date'); //Program date
+		
+		if(isset($prevdate) && $date!=$prevdate) //New day
+		{
+			$filename=$xmltv->savefile($starttimestamp); //Save previous day
+			echo $filename."\n";
+			//Restart xmltv
+			unset($xmltv);
+			$xmltv=new xmltvgenerator('natgeo.no','nb');
+
+		}
+
+		$starttime=$program->getelementsbytagname('h5')->item(0)->textContent; //Program start time
+		$starttimestamp=strtotime($date.' '.$starttime);
+
+		//print_r($program);
+		$title=$program->getelementsbytagname('h3')->item(0)->textContent;
+		//die();
+		//$title=$program->childNodes->item(0)->childNodes->item(2)->textContent;
+		//$epname=$program->childNodes->item(1)->childNodes->item(1)->childNodes->item(0)->textContent;			
+		//$description=$program->childNodes->item(1)->childNodes->item(1)->childNodes->item(1)->textContent;
+		$description=$program->getelementsbytagname('p')->item(0)->textContent;
+
+		//print_r($ep);
+		$programme=$xmltv->program($title,$description,$starttimestamp);
+		if($program->getelementsbytagname('h4')->length==1)
+		{
+			$epname=$program->getelementsbytagname('h4')->item(0)->textContent;
+			if(preg_match('/(.*),\s+Sesong ([0-9]+).+Episode ([0-9]+)/',$epname,$ep))
+			    $xmltv->episodeinfo($programme,$ep[2],$ep[3]);
+			else
+            {
+                printf("Unable to find episode information from \"%s\"\n", $epname);
+            }
+		}
+		$prevdate=$date; //Save current date for next iteration
+		//print_r($programme);
+		//break 2;
 	}
 }
-
-$filename=$xmltv->savefile($timestamp);
-echo "\n$filename\n";
-?>
