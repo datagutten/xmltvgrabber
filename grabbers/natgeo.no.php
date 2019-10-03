@@ -17,12 +17,8 @@ $ymd=date('Y-m-d',$timestamp);
 $data=$grabber->download($url='http://www.natgeotv.com/no/tvguide/natgeo/'.$urldate,'natgeo.no','htm',$timestamp);
 @$dom->loadHTML($data);
 $days=$dom->getElementById('scheduleDays');
-//$startday=substr($days->textContent,0,5);
 
-//print_r($dom->getElementById('scheduleDays')->getelementsbytagname('a')->item(0)->getAttribute('href'));
-//die();
 preg_match('/[0-9]+/',$dom->getElementById('scheduleDays')->textContent,$startday);
-//print_r($startday);
 $startday=$startday[0];
 
 if($startday>date('j',$timestamp)) //First day is in previous month
@@ -43,8 +39,6 @@ foreach ($ul as $day)
      */
 	foreach($day->childNodes as $program)
 	{
-		//$starttime=$program->childNodes->item(0)->childNodes->item(1)->textContent;
-
 		$date=$program->getattribute('data-datetime-date'); //Program date
 		
 		if(isset($prevdate) && $date!=$prevdate) //New day
@@ -60,15 +54,10 @@ foreach ($ul as $day)
 		$starttime=$program->getelementsbytagname('h5')->item(0)->textContent; //Program start time
 		$starttimestamp=strtotime($date.' '.$starttime);
 
-		//print_r($program);
 		$title=$program->getelementsbytagname('h3')->item(0)->textContent;
-		//die();
-		//$title=$program->childNodes->item(0)->childNodes->item(2)->textContent;
-		//$epname=$program->childNodes->item(1)->childNodes->item(1)->childNodes->item(0)->textContent;			
-		//$description=$program->childNodes->item(1)->childNodes->item(1)->childNodes->item(1)->textContent;
+
 		$description=$program->getelementsbytagname('p')->item(0)->textContent;
 
-		//print_r($ep);
 		$programme=$xmltv->program($title,$description,$starttimestamp);
 		if($program->getelementsbytagname('h4')->length==1)
 		{
