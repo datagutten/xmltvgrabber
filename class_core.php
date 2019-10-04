@@ -26,13 +26,30 @@ class core
 			mkdir($folder,0777,true);
 		return $folder;
 	}
+
+    /**
+     * @deprecated Use file::filename
+     * @param $channel
+     * @param $timestamp
+     * @param $extension
+     * @return string
+     */
 	public function filename($channel,$timestamp,$extension)
 	{
-		return $channel.'_'.date('Y-m-d',$timestamp).'.'.$extension;
+		return file::filename($channel, $timestamp, $extension);
 	}
+
+    /**
+     * @deprecated Use file::file_path
+     * @param $channel
+     * @param $subfolder
+     * @param $timestamp
+     * @param $extension
+     * @return string
+     */
 	public function fullpath($channel,$subfolder,$timestamp,$extension)
 	{
-		return $this->foldername($channel,$subfolder,$timestamp).$this->filename($channel,$timestamp,$extension);	
+		return file::file_path($channel, $subfolder, $timestamp, $extension);
 	}
 }
 ?>
