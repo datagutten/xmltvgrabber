@@ -1,4 +1,5 @@
 <?Php
+use datagutten\xmltv\tools\common\file;
 class core
 {
 	public $outpath;
@@ -16,12 +17,17 @@ class core
 		$this->outpath=$outpath;
 		$this->subfolder=$subfolder;
 	}
-	public function foldername($channel,$subfolder,$timestamp=false)
+
+    /**
+     * @param $channel
+     * @param $subfolder
+     * @param int $timestamp
+     * @return string
+     */
+	public function foldername($channel,$subfolder,$timestamp=null)
 	{
-		if($timestamp===false)
-			$timestamp=strtotime('midnight');
-		$date=date('Y',$timestamp);
-		$folder=$this->outpath."$channel/$subfolder/$date/";
+	    $folder = file::folder($channel, $subfolder, $timestamp);
+		$folder=$this->outpath.'/'.$folder;
 		if(!file_exists($folder))
 			mkdir($folder,0777,true);
 		return $folder;
