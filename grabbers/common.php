@@ -105,10 +105,12 @@ class common
     }
 
     /**
-     * @param int $timestamp
+     * @param int $timestamp Time stamp for the day to grab
+     * @return string File name
+     * @codeCoverageIgnore
      */
     public function grab($timestamp=null)
     {
-
+        return $timestamp; //Dummy return to avoid warnings
     }
 }
