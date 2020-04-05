@@ -24,10 +24,11 @@ class grabberTest extends TestCase
     }
 
     /**
+     * @param string $id Channel id
      * @param string $grabber_class Grabber class name
      * @dataProvider grabberProvider
      */
-    function testGrab($grabber_class)
+    function testGrab($id, $grabber_class)
     {
         /**
          * @var $grabber grabbers\common
@@ -35,6 +36,8 @@ class grabberTest extends TestCase
         $grabber = new $grabber_class;
         $file = $grabber->grab();
         $this->assertFileExists($file);
+        $this->assertEquals($id, $grabber->channel);
+        $this->assertStringStartsWith($id, basename($file));
         $xml = simplexml_load_file($file);
         if(empty($xml->{'programme'}))
             $this->fail('<programme> missing or empty');
@@ -48,9 +51,9 @@ class grabberTest extends TestCase
     public function grabberProvider()
     {
         $grabbers = [];
-        foreach(grabbers\grabbers::getGrabbers() as $grabber)
+        foreach(grabbers\grabbers::getGrabbers() as $id=>$grabber)
         {
-            $grabbers[] = [$grabber];
+            $grabbers[] = [$id, $grabber];
         }
         return $grabbers;
     }
