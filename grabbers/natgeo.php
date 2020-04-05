@@ -4,6 +4,7 @@ use datagutten\xmltv\tools\build\programme;
 use datagutten\xmltv\tools\build\tv;
 use DOMDocument;
 use DOMElement;
+use Requests_Exception;
 
 class natgeo extends common
 {
@@ -20,7 +21,15 @@ class natgeo extends common
         $dom=new DOMDocument;
 
         $url = sprintf('http://www.natgeotv.com/no/tvguide/natgeo/%s', date('Ymd',$timestamp));
-        $data = $this->download($url, $timestamp);
+        try {
+            $data = $this->download_cache($url, $timestamp);
+        }
+        catch (Requests_Exception $e)
+        {
+            echo $e->getMessage();
+            return null;
+        }
+
         @$dom->loadHTML($data);
         $days = $dom->getElementById('scheduleDays');
 

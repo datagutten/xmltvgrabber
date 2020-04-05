@@ -5,7 +5,7 @@ namespace datagutten\xmltv\grabbers;
 
 
 use datagutten\xmltv\tools\build\programme;
-use Exception;
+use Requests_Exception;
 
 abstract class disney_no extends common
 {
@@ -20,7 +20,7 @@ abstract class disney_no extends common
         try {
             $data = $this->download_cache($url, $timestamp, 'json');
         }
-        catch (Exception $e)
+        catch (Requests_Exception $e)
         {
             echo $e->getMessage();
             return null;
