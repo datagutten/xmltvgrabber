@@ -19,6 +19,7 @@ class grabbers
         'max.no' => discovery_max_no::class,
         'tlc.discovery.no'=> discovery_tlc_no::class,
         'investigation.discovery.no' => discovery_investigation_no::class,
+        'science.discovery.no' => discovery_science_no::class,
         ];
 
     /**

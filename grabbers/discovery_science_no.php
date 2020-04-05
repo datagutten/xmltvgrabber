@@ -8,6 +8,6 @@ class discovery_science_no extends discovery_no
 {
     function __construct()
     {
-        parent::__construct('max.no', 'nb');
+        parent::__construct('science.discovery.no', 'nb');
     }
 }
