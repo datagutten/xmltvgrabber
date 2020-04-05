@@ -1,0 +1,35 @@
+{
+    "name": "datagutten/xmltvgrabber",
+    "description": "A tool to grab tv-listings and save them in xmltv format",
+    "type": "project",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "datagutten",
+            "email": "datagutten@datagutten.net"
+        }
+    ],
+    "require": {
+        "ext-curl": "*",
+        "ext-dom": "*",
+        "ext-json": "*",
+        "ext-simplexml": "*",
+        "datagutten/tools": "^1.1",
+        "datagutten/xmltvtools": "^2.0",
+        "rmccue/requests": "^1.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "datagutten\\xmltv\\grabbers\\": "grabbers",
+            "datagutten\\xmltv\\tests\\": "tests"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.1",
+        "symfony/filesystem": "^4.3"
+    },
+   "config": {
+     "sort-packages": true
+   },
+    "bin": ["grab.php"]
+}
