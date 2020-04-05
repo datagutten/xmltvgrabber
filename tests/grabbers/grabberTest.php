@@ -57,4 +57,10 @@ class grabberTest extends TestCase
         }
         return $grabbers;
     }
+    
+    public function testGetGrabber()
+    {
+        $class = grabbers\grabbers::grabber('max.no');
+        $this->assertEquals(grabbers\discovery_max_no::class, $class);
+    }
 }
