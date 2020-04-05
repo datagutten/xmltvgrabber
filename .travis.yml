@@ -1,0 +1,29 @@
+language: php
+
+matrix:
+  fast_finish: true
+  include:
+    - php: '7.4'
+    - php: 'nightly'
+      install:
+        - composer install --no-interaction --ignore-platform-reqs
+  allow_failures:
+    - php: 'nightly'
+
+addons:
+ apt:
+  packages:
+   - php-xml
+
+install:
+ - composer install --no-interaction;
+
+before_script:
+ - echo 'date.timezone = "Europe/Oslo"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+ - vendor/bin/phpunit --version
+
+script:
+ - vendor/bin/phpunit
+
+after_script:
+  - bash <(curl -s https://codecov.io/bash)
