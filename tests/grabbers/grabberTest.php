@@ -35,6 +35,7 @@ class grabberTest extends TestCase
          */
         $grabber = new $grabber_class;
         $file = $grabber->grab();
+        $this->assertNotEmpty($file);
         $this->assertFileExists($file);
         $this->assertEquals($id, $grabber->channel);
         $this->assertStringStartsWith($id, basename($file));
