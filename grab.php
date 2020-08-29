@@ -4,7 +4,7 @@ use datagutten\xmltv\grabbers;
 
 require 'vendor/autoload.php';
 
-if(isset($argv[1]))
+if(isset($argv[1]) && $argv[1]!='all')
     $grabbers = [grabbers\grabbers::grabber($argv[1])];
 else
     $grabbers = grabbers\grabbers::getGrabbers();
