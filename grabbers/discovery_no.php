@@ -33,12 +33,11 @@ class discovery_no extends common
             $url=sprintf($url_template,urlencode($channel),date('Y-m-d',$day));
             try {
                 $data = $this->download_cache($url, $day, 'json');
-            }
-            catch (Requests_Exception $e)
-            {
-                echo $e->getMessage();
+            } // @codeCoverageIgnoreStart
+            catch (Requests_Exception $e) {
+                echo 'Error loading data: '.$e->getMessage();
                 return null;
-            }
+            } // @codeCoverageIgnoreEnd
 
             list($day_start, $day_end) = self::day_start_end($timestamp);
 

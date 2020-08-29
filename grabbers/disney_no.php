@@ -19,12 +19,11 @@ abstract class disney_no extends common
         $url = sprintf('https://tv.disney.no/_schedule/full/%s/2/%s', date('Ymd',$timestamp), urlencode($channel));
         try {
             $data = $this->download_cache($url, $timestamp, 'json');
-        }
-        catch (Requests_Exception $e)
-        {
-            echo $e->getMessage();
+        } // @codeCoverageIgnoreStart
+        catch (Requests_Exception $e) {
+            echo 'Error loading data: '.$e->getMessage();
             return null;
-        }
+        } // @codeCoverageIgnoreEnd
 
         list($day_start, $day_end) = self::day_start_end($timestamp);
 

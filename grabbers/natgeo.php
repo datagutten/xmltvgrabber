@@ -24,12 +24,11 @@ class natgeo extends common
         $url = sprintf('http://www.natgeotv.com/no/tvguide/natgeo/%s', date('Ymd',$timestamp));
         try {
             $data = $this->download_cache($url, $timestamp);
-        }
-        catch (Requests_Exception $e)
-        {
-            echo $e->getMessage();
+        } // @codeCoverageIgnoreStart
+        catch (Requests_Exception $e) {
+            echo 'Error loading data: '.$e->getMessage();
             return null;
-        }
+        } // @codeCoverageIgnoreEnd
 
         @$dom->loadHTML($data);
         $days = $dom->getElementById('acilia-schedule-list'); //div
