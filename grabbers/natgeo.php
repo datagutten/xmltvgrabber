@@ -76,6 +76,6 @@ class natgeo extends common
                 }
             }
         }
-        return $this->tv->save_file($timestamp);
+        return $this->save_file($timestamp);
     }
 }

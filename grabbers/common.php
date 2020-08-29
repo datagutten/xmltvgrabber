@@ -24,8 +24,9 @@ class common
      */
     function __construct($channel, $language)
     {
+        $config = require 'config.php';
         $this->channel = $channel;
-        $this->files = new files();
+        $this->files = new files($config['xmltv_path'], $config['xmltv_sub_folders']);
         $this->tv = new tv($channel, $language);
     }
 
@@ -113,4 +114,13 @@ class common
     {
         return $timestamp; //Dummy return to avoid warnings
     }
+
+    function save_file($timestamp)
+    {
+        $file = $this->files->file($this->channel, $timestamp);
+        $xml_string = $this->tv->format_output();
+        $this->files->filesystem->dumpFile($file, $xml_string);
+        return $file;
+    }
+
 }

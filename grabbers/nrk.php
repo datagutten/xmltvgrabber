@@ -67,7 +67,7 @@ abstract class nrk extends common
             }
         }
         if(!empty($programme))
-            return $this->tv->save_file($timestamp);
+            return $this->save_file($timestamp);
         else
             unlink($this->local_file($timestamp, 'json'));
     }

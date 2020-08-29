@@ -61,6 +61,6 @@ class discovery_no extends common
                     $programme->series($program['episode'], $program['season'], $program['numEpisodes']);
             }
         }
-        return $this->tv->save_file($timestamp);
+        return $this->save_file($timestamp);
     }
 }

@@ -2,7 +2,8 @@
 
 use datagutten\xmltv\grabbers;
 
-require 'vendor/autoload.php';
+require __DIR__.'/vendor/autoload.php';
+set_include_path(__DIR__);
 
 if(isset($argv[1]) && $argv[1]!='all')
     $grabbers = [grabbers\grabbers::grabber($argv[1])];
@@ -21,7 +22,7 @@ foreach ($grabbers as $grabber_class) {
     else
         $end_timestamp = strtotime($argv[3]);
 
-    printf("Grabbing from %s to %s", date('c', $start_timestamp), date('c', $end_timestamp));
+    printf("Grabbing from %s to %s\n", date('c', $start_timestamp), date('c', $end_timestamp));
 
     for ($timestamp = $start_timestamp; $timestamp <= $end_timestamp; $timestamp = $timestamp + 86400) {
         /**
