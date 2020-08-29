@@ -8,6 +8,9 @@ use InvalidArgumentException;
 
 class grabbers
 {
+    /**
+     * @var common[]
+     */
     public static $grabbers = [
         'natgeo.no' => natgeo::class,
         'disneychannel.no' => disney_channel::class,
@@ -19,6 +22,10 @@ class grabbers
         'tlc.discovery.no'=> discovery_tlc_no::class,
         'investigation.discovery.no' => discovery_investigation_no::class,
         'science.discovery.no' => discovery_science_no::class,
+        'nrk1.nrk.no' => nrk1::class,
+        'nrk2.nrk.no' => nrk2::class,
+        'nrk3.nrk.no' => nrk3::class,
+        'nrksuper.nrk.no' => nrksuper::class,
         ];
 
     /**
