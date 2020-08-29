@@ -3,6 +3,7 @@
 namespace datagutten\xmltv\tests\grabbers;
 
 use datagutten\xmltv\grabbers;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -63,5 +64,12 @@ class grabberTest extends TestCase
     {
         $class = grabbers\grabbers::grabber('max.no');
         $this->assertEquals(grabbers\discovery_max_no::class, $class);
+    }
+
+    public function testInvalidGrabber()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('No grabber for test.no');
+        grabbers\grabbers::grabber('test.no');
     }
 }
