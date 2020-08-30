@@ -1,5 +1,7 @@
 <?Php
+
 namespace datagutten\xmltv\grabbers\base;
+
 use datagutten\xmltv\tools\build\tv;
 use datagutten\xmltv\tools\common\files;
 use FileNotFoundException;
@@ -9,10 +11,16 @@ use Requests_Exception_HTTP;
 
 class common
 {
+    /**
+     * @var string Current channel id
+     */
     public $channel;
+    /**
+     * @var files Files class
+     */
     public $files;
     /**
-     * @var tv
+     * @var tv tv class
      */
     public $tv;
 
@@ -22,7 +30,7 @@ class common
      * @param $language
      * @throws FileNotFoundException
      */
-    function __construct($channel, $language)
+    public function __construct($channel, $language)
     {
         $config = require 'config.php';
         $this->channel = $channel;
@@ -31,21 +39,22 @@ class common
     }
 
     /**
-     * @param $url
-     * @param $extension
-     * @param null $timestamp
+     * Download and save the original data
+     * @param string $url URL
+     * @param string $extension Extension for saved file
+     * @param int $timestamp Timestamp for the saved file
      * @return string
      * @throws Requests_Exception
      * @throws Requests_Exception_HTTP
      */
-    public function download($url, $timestamp=null, $extension = 'html') //Download and save the original data
-	{
-		$response = Requests::get($url);
-		$response->throw_for_status();
-		$file=$this->local_file($timestamp,$extension);
-		file_put_contents($file, $response->body);
-		return $response->body;
-	}
+    public function download($url, $timestamp=null, $extension='html')
+    {
+        $response = Requests::get($url);
+        $response->throw_for_status();
+        $file = $this->local_file($timestamp, $extension);
+        file_put_contents($file, $response->body);
+        return $response->body;
+    }
 
     /**
      * @param $url
@@ -55,13 +64,11 @@ class common
      * @throws Requests_Exception
      * @throws Requests_Exception_HTTP
      */
-	public function download_cache($url, $timestamp = null, $extension = 'html')
+    public function download_cache($url, $timestamp=null, $extension='html')
     {
         try {
             return $this->load_local_file($timestamp, $extension);
-        }
-        catch (FileNotFoundException $e)
-        {
+        } catch (FileNotFoundException $e) {
             return $this->download($url, $timestamp, $extension);
         }
     }
@@ -71,10 +78,10 @@ class common
      * @param int $timestamp Time stamp
      * @return string File name
      */
-	public function local_file($timestamp, $extension = 'html')
-	{
-	    return $this->files->file($this->channel, $timestamp, 'raw_data', $extension, true);
-	}
+    public function local_file($timestamp, $extension = 'html')
+    {
+        return $this->files->file($this->channel, $timestamp, 'raw_data', $extension, true);
+    }
 
     /**
      * @param string $extension File extension
@@ -82,7 +89,7 @@ class common
      * @return string
      * @throws FileNotFoundException
      */
-	public function load_local_file($timestamp, $extension = 'html')
+    public function load_local_file($timestamp, $extension = 'html')
     {
         $file = $this->local_file($timestamp, $extension);
         if(file_exists($file))
@@ -115,12 +122,11 @@ class common
         return $timestamp; //Dummy return to avoid warnings
     }
 
-    function save_file($timestamp)
+    public function save_file($timestamp)
     {
         $file = $this->files->file($this->channel, $timestamp);
         $xml_string = $this->tv->format_output();
         $this->files->filesystem->dumpFile($file, $xml_string);
         return $file;
     }
-
 }
