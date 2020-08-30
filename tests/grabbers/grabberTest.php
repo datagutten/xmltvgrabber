@@ -59,7 +59,40 @@ class grabberTest extends TestCase
         }
         return $grabbers;
     }
-    
+
+    public function dateProvider()
+    {
+        $dates = [];
+        foreach (array_keys(grabbers\base\discovery_no::$channels) as $channel) {
+            $dates[] = [$channel, '2011-06-01'];
+        }
+
+        foreach (array_keys(grabbers\base\disney_no::$channels) as $channel) {
+            $dates[] = [$channel, '2011-06-01'];
+        }
+
+        return $dates;
+    }
+
+    /**
+     * @param string $channel Channel id
+     * @param string $date Date
+     * @dataProvider dateProvider
+     * @requires PHPUnit 9.1
+     */
+    public function testInvalidDate($channel, $date)
+    {
+        $grabber = grabbers\grabbers::grabber($channel);
+        /**
+         * @var $grabber grabbers\base\common
+         */
+        $grabber = new $grabber;
+        $result = $grabber->grab(strtotime($date));
+        $this->assertEmpty($result);
+        $file = $grabber->files->file($grabber->channel, strtotime($date));
+        $this->assertFileDoesNotExist($file);
+    }
+
     public function testGetGrabber()
     {
         $class = grabbers\grabbers::grabber('max.no');
