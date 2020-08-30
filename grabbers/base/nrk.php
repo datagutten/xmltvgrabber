@@ -10,6 +10,9 @@ use DateTimeImmutable;
 use Exception;
 use Requests_Exception;
 
+/**
+ * Grabber for NRK channels
+ */
 abstract class nrk extends common
 {
     /**

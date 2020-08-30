@@ -9,6 +9,9 @@ use Requests;
 use Requests_Exception;
 use Requests_Exception_HTTP;
 
+/**
+ * Base class for all grabbers
+ */
 class common
 {
     /**

@@ -6,6 +6,9 @@ namespace datagutten\xmltv\grabbers\base;
 use datagutten\xmltv\tools\build\programme;
 use Requests_Exception;
 
+/**
+ * Common grabber class for Discovery Networks
+ */
 class discovery_no extends common
 {
     /**

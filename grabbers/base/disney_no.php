@@ -7,6 +7,9 @@ namespace datagutten\xmltv\grabbers\base;
 use datagutten\xmltv\tools\build\programme;
 use Requests_Exception;
 
+/**
+ * Common grabber class for Disney
+ */
 abstract class disney_no extends common
 {
     /**
