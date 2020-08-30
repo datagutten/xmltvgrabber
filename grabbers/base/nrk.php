@@ -26,7 +26,7 @@ abstract class nrk extends common
     {
         if (empty($timestamp))
             $timestamp = strtotime('midnight');
-        $channel = $this->channels[$this->channel];
+        $channel = self::$channels[$this->channel];
         list($day_start, $day_end) = self::day_start_end($timestamp);
 
         foreach (array(strtotime('-1 day', $timestamp), $timestamp) as $day)
