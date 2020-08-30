@@ -9,13 +9,20 @@ use Requests_Exception;
 
 abstract class disney_no extends common
 {
-    public $channels=array('disneychannel.no'=>'/tv-oversikt', 'junior.disneychannel.no'=>'/tv-oversikt/disney-junior', 'xd.disneychannel.no'=>'/tv-oversikt/disney-xd');
+    /**
+     * @var string[] Channel name and IDs
+     */
+    public static $channels = [
+        'disneychannel.no'    => '/tv-oversikt',
+        'xd.disneychannel.no' => '/tv-oversikt/disney-xd',
+        //'junior.disneychannel.no' => '/tv-oversikt/disney-junior',
+    ];
 
     function grab($timestamp=null)
     {
         if (empty($timestamp))
             $timestamp = strtotime('midnight');
-        $channel = $this->channels[$this->channel];
+        $channel = self::$channels[$this->channel];
         $url = sprintf('https://tv.disney.no/_schedule/full/%s/2/%s', date('Ymd',$timestamp), urlencode($channel));
         try {
             $data = $this->download_cache($url, $timestamp, 'json');
