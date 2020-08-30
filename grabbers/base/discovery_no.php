@@ -46,6 +46,9 @@ class discovery_no extends common
                 return null;
             } // @codeCoverageIgnoreEnd
 
+            if ($data === '[]')
+                return null;
+
             list($day_start, $day_end) = self::day_start_end($timestamp);
 
             $programs=json_decode($data,true);
