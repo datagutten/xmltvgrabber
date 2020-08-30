@@ -32,7 +32,7 @@ class grabberTest extends TestCase
     function testGrab($id, $grabber_class)
     {
         /**
-         * @var $grabber grabbers\common
+         * @var $grabber grabbers\base\common
          */
         $grabber = new $grabber_class;
         $file = $grabber->grab();

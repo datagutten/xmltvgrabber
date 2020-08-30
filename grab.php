@@ -26,7 +26,7 @@ foreach ($grabbers as $grabber_class) {
 
     for ($timestamp = $start_timestamp; $timestamp <= $end_timestamp; $timestamp = $timestamp + 86400) {
         /**
-         * @var $grabber grabbers\common
+         * @var $grabber grabbers\base\common
          */
         $grabber = new $grabber_class;
         $file = $grabber->grab($timestamp);
