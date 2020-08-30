@@ -1,7 +1,7 @@
 <?php
 
 
-namespace datagutten\xmltv\grabbers;
+namespace datagutten\xmltv\grabbers\base;
 
 
 use datagutten\xmltv\tools\build\programme;

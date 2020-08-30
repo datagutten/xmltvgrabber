@@ -1,5 +1,5 @@
 <?Php
-namespace datagutten\xmltv\grabbers;
+namespace datagutten\xmltv\grabbers\base;
 use datagutten\xmltv\tools\build\tv;
 use datagutten\xmltv\tools\common\files;
 use FileNotFoundException;

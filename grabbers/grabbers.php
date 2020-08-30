@@ -9,7 +9,7 @@ use InvalidArgumentException;
 class grabbers
 {
     /**
-     * @var common[]
+     * @var base\common[]
      */
     public static $grabbers = [
         'natgeo.no' => natgeo::class,
@@ -30,7 +30,7 @@ class grabbers
 
     /**
      * @param string $xmltv_id XMLTV DNS-like id
-     * @return common
+     * @return base\common
      */
     public static function grabber($xmltv_id)
     {

@@ -4,7 +4,7 @@
 namespace datagutten\xmltv\grabbers;
 
 
-class nrk3 extends nrk
+class nrk3 extends base\nrk
 {
     function __construct()
     {

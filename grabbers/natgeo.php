@@ -5,7 +5,7 @@ use DOMDocument;
 use DOMElement;
 use Requests_Exception;
 
-class natgeo extends common
+class natgeo extends base\common
 {
     function __construct()
     {

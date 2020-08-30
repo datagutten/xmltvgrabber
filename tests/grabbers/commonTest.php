@@ -2,7 +2,7 @@
 
 namespace datagutten\xmltv\tests\grabbers;
 
-use datagutten\xmltv\grabbers\common;
+use datagutten\xmltv\grabbers\base\common;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Requests_Exception;

@@ -4,7 +4,7 @@
 namespace datagutten\xmltv\grabbers;
 
 
-class disney_channel extends disney_no
+class disney_channel extends base\disney_no
 {
     function __construct()
     {

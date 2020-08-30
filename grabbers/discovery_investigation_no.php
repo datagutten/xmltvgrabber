@@ -4,7 +4,7 @@
 namespace datagutten\xmltv\grabbers;
 
 
-class discovery_investigation_no extends discovery_no
+class discovery_investigation_no extends base\discovery_no
 {
     function __construct()
     {
