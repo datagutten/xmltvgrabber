@@ -20,11 +20,6 @@ matrix:
   allow_failures:
     - php: 'nightly'
 
-addons:
- apt:
-  packages:
-   - php-xml
-
 cache:
   directories:
     - $HOME/.composer/cache/files
