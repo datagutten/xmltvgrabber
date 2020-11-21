@@ -68,5 +68,11 @@ abstract class disney_no extends common
         }
         if(!empty($programme))
             return $this->save_file($timestamp);
+        else
+        {
+            $cache_file = $this->local_file($timestamp, 'json');
+            unlink($cache_file);
+            return null;
+        }
     }
 }

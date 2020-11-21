@@ -50,7 +50,11 @@ class discovery_no extends common
             } // @codeCoverageIgnoreEnd
 
             if ($data === '[]')
+            {
+                $cache_file = $this->local_file($day, 'json');
+                unlink($cache_file);
                 return null;
+            }
 
             list($day_start, $day_end) = self::day_start_end($timestamp);
 
