@@ -4,6 +4,8 @@ matrix:
   fast_finish: true
   include:
     - php: '7.4'
+      after_script:
+        - bash <(curl -s https://codecov.io/bash)
     - php: 'nightly'
       install:
         - composer install --no-interaction --ignore-platform-reqs
@@ -29,6 +31,3 @@ before_script:
 
 script:
  - vendor/bin/phpunit
-
-after_script:
-  - bash <(curl -s https://codecov.io/bash)
