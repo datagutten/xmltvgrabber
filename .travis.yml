@@ -3,6 +3,9 @@ language: php
 matrix:
   fast_finish: true
   include:
+    - php: '7.1'
+    - php: '7.2'
+    - php: '7.3'
     - php: '7.4'
       after_script:
         - bash <(curl -s https://codecov.io/bash)
@@ -22,8 +25,13 @@ addons:
   packages:
    - php-xml
 
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+    - $HOME/.cache/composer/files
+
 install:
- - composer install --no-interaction;
+ - composer install --no-interaction
 
 before_script:
  - echo 'date.timezone = "Europe/Oslo"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
