@@ -70,7 +70,8 @@ class discovery_no extends common
 
                 $programme = new programme($program_start, $this->tv);
                 $programme->title($program['title']);
-                $programme->description($program['shortDescription']);
+                if(!empty($program['shortDescription']))
+                    $programme->description($program['shortDescription']);
                 $programme->stop(strtotime($program['endTime']));
 
                 if(!empty($program['episode']))

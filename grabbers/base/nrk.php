@@ -71,7 +71,8 @@ abstract class nrk extends common
 
                 $programme = new programme($program_start, $this->tv);
                 $programme->title($entry['title']);
-                $programme->description($entry['description']);
+                if(!empty($entry['description']))
+                    $programme->description($entry['description']);
                 $programme->stop($end);
                 if(preg_match('#Sesong ([0-9]+) \(([0-9]+):([0-9]+)\)#', $entry['description'], $matches)) {
                     $programme->series($matches[2], $matches[1], $matches[3], $matches[0]);
