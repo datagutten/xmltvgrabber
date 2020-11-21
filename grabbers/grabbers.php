@@ -15,6 +15,7 @@ class grabbers
         'natgeo.no' => natgeo::class,
         'disneychannel.no' => disney_channel::class,
         'xd.disneychannel.no' => disney_xd::class,
+        'junior.disneychannel.no' => disney_junior::class,
         'tvnorge.no' => discovery_tvnorge::class,
         'fem.no' => discovery_fem_no::class,
         'voxtv.no' => discovery_vox_no::class,
