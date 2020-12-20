@@ -22,7 +22,7 @@ foreach ($grabbers as $grabber_class) {
     else
         $end_timestamp = strtotime($argv[3]);
 
-    printf("Grabbing from %s to %s\n", date('c', $start_timestamp), date('c', $end_timestamp));
+    printf("Grabbing %s from %s to %s\n", $grabber_class, date('c', $start_timestamp), date('c', $end_timestamp));
 
     for ($timestamp = $start_timestamp; $timestamp <= $end_timestamp; $timestamp = $timestamp + 86400) {
         /**
