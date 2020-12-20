@@ -30,7 +30,10 @@ foreach ($grabbers as $grabber_class) {
          */
         $grabber = new $grabber_class;
         $file = $grabber->grab($timestamp);
-        echo $file . "\n";
+        if(empty($file))
+            echo "No file found\n";
+        else
+            echo $file . "\n";
         unset($grabber);
     }
 }
