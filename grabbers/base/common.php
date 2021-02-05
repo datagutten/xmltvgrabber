@@ -50,7 +50,7 @@ class common
      * @throws Requests_Exception
      * @throws Requests_Exception_HTTP
      */
-    public function download($url, $timestamp=null, $extension='html')
+    public function download($url, $timestamp=0, $extension='html')
     {
         $response = Requests::get($url);
         $response->throw_for_status();
@@ -81,7 +81,7 @@ class common
      * @param int $timestamp Time stamp
      * @return string File name
      */
-    public function local_file($timestamp, $extension = 'html')
+    public function local_file(int $timestamp, $extension = 'html')
     {
         return $this->files->file($this->channel, $timestamp, 'raw_data', $extension, true);
     }
@@ -120,7 +120,7 @@ class common
      * @return string File name
      * @codeCoverageIgnore
      */
-    public function grab($timestamp=null)
+    public function grab($timestamp=0)
     {
         return $timestamp; //Dummy return to avoid warnings
     }

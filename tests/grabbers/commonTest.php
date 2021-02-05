@@ -34,8 +34,8 @@ class commonTest extends TestCase
      */
     public function testDownload()
     {
-        $this->common->download('https://httpbin.org/get', null, 'json');
-        $file = $this->common->local_file(null, 'json');
+        $this->common->download('https://httpbin.org/get', 0, 'json');
+        $file = $this->common->local_file(0, 'json');
         $this->assertFileExists($file);
     }
 
@@ -44,10 +44,10 @@ class commonTest extends TestCase
      */
     public function testDownload_cache()
     {
-        $this->common->download_cache('https://httpbin.org/get', null, 'json');
-        $file = $this->common->local_file(null, 'json');
+        $this->common->download_cache('https://httpbin.org/get', 0, 'json');
+        $file = $this->common->local_file(0, 'json');
         $this->assertFileExists($file);
-        $data = $this->common->download_cache('foo', null, 'json');
+        $data = $this->common->download_cache('foo', 0, 'json');
         $this->assertNotEmpty($data);
     }
 
