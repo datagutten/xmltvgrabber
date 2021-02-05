@@ -14,7 +14,6 @@ class grabbers
     public static $grabbers = [
         'natgeo.no' => natgeo::class,
         'disneychannel.no' => disney_channel::class,
-        'xd.disneychannel.no' => disney_xd::class,
         'junior.disneychannel.no' => disney_junior::class,
         'tvnorge.no' => discovery_tvnorge::class,
         'fem.no' => discovery_fem_no::class,
@@ -26,8 +25,6 @@ class grabbers
         'science.discovery.no' => discovery_science_no::class,
         'animalplanet.discovery.no' => discovery_animalplanet_no::class,
         'eurosport.no' => discovery_eurosport_no::class,
-        'world.discovery.no' => discovery_world_no::class,
-        'hd.discovery.no' => discovery_hd_no::class,
         'nrk1.nrk.no' => nrk1::class,
         'nrk2.nrk.no' => nrk2::class,
         'nrk3.nrk.no' => nrk3::class,

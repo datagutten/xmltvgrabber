@@ -17,7 +17,6 @@ abstract class disney_no extends common
      */
     public static $channels = [
         'disneychannel.no'    => '/tv-oversikt',
-        'xd.disneychannel.no' => '/tv-oversikt/disney-xd',
         'junior.disneychannel.no' => '/tv-oversikt/disney-junior',
     ];
 

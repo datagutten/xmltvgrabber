@@ -25,8 +25,6 @@ class discovery_no extends common
         'discovery.no'               => 'Discovery Channel',
         'investigation.discovery.no' => 'Investigation Discovery',
         'science.discovery.no'       => 'Discovery Science',
-        'world.discovery.no'         => 'Discovery World',
-        'hd.discovery.no'            => 'Discovery HD Showcase',
     ];
 
 
