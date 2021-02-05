@@ -11,6 +11,7 @@ matrix:
         - composer update --no-interaction
     - php: '7.3'
     - php: '7.4'
+    - php: '8.0'
       after_script:
         - bash <(curl -s https://codecov.io/bash)
     - php: 'nightly'
