@@ -14,7 +14,7 @@
         "ext-dom": "*",
         "ext-json": "*",
         "ext-simplexml": "*",
-        "datagutten/tools": "^1.1",
+        "datagutten/tools": "^1.8",
         "datagutten/xmltvtools": "^3.0",
         "rmccue/requests": "^1.7"
     },
