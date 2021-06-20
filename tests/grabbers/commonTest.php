@@ -2,6 +2,7 @@
 
 namespace datagutten\xmltv\tests\grabbers;
 
+use datagutten\tools\files\files;
 use datagutten\xmltv\grabbers\base\common;
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -54,7 +55,9 @@ class commonTest extends TestCase
     public function testLocal_file()
     {
         $file = $this->common->local_file(strtotime('2019-08-15'), 'json');
-        $this->assertEquals(__DIR__.'/xmltv_test/test.no/raw_data/2019/test.no_2019-08-15.json', $file);
+        $expected_file = files::path_join(__DIR__, 'xmltv_test', 'test.no', 'raw_data', '2019',
+            'test.no_2019-08-15.json');
+        $this->assertEquals($expected_file, $file);
     }
 
     public function tearDown(): void
