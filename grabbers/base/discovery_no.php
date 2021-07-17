@@ -19,7 +19,6 @@ class discovery_no extends common
         'fem.no'                     => 'FEM',
         'max.no'                     => 'MAX',
         'voxtv.no'                   => 'VOX',
-        'eurosport.no'               => 'Eurosport Norge',
         'animalplanet.discovery.no'  => 'Animal Planet',
         'tlc.discovery.no'           => 'TLC',
         'discovery.no'               => 'Discovery Channel',

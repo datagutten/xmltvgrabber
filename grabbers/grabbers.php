@@ -24,7 +24,6 @@ class grabbers
         'investigation.discovery.no' => discovery_investigation_no::class,
         'science.discovery.no' => discovery_science_no::class,
         'animalplanet.discovery.no' => discovery_animalplanet_no::class,
-        'eurosport.no' => discovery_eurosport_no::class,
         'nrk1.nrk.no' => nrk1::class,
         'nrk2.nrk.no' => nrk2::class,
         'nrk3.nrk.no' => nrk3::class,
