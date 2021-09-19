@@ -2,12 +2,13 @@
 
 namespace datagutten\xmltv\grabbers\base;
 
+use datagutten\xmltv\grabbers\exceptions;
 use datagutten\xmltv\tools\build\tv;
 use datagutten\xmltv\tools\common\files;
+use datagutten\xmltv\tools\exceptions\ChannelNotFoundException;
 use FileNotFoundException;
 use Requests;
 use Requests_Exception;
-use Requests_Exception_HTTP;
 
 /**
  * Base class for all grabbers
@@ -47,13 +48,19 @@ class common
      * @param string $extension Extension for saved file
      * @param int $timestamp Timestamp for the saved file
      * @return string
-     * @throws Requests_Exception
-     * @throws Requests_Exception_HTTP
+     * @throws exceptions\ConnectionError|exceptions\XMLTVError
      */
     public function download($url, $timestamp=0, $extension='html')
     {
-        $response = Requests::get($url);
-        $response->throw_for_status();
+        try
+        {
+            $response = Requests::get($url);
+            $response->throw_for_status();
+        }
+        catch (Requests_Exception $e)
+        {
+            throw new exceptions\ConnectionError($e->getMessage(), 0, $e);
+        }
         $file = $this->local_file($timestamp, $extension);
         file_put_contents($file, $response->body);
         return $response->body;
@@ -64,8 +71,7 @@ class common
      * @param null $timestamp
      * @param string $extension
      * @return string
-     * @throws Requests_Exception
-     * @throws Requests_Exception_HTTP
+     * @throws exceptions\ConnectionError|exceptions\XMLTVError
      */
     public function download_cache($url, $timestamp=null, $extension='html')
     {
@@ -77,20 +83,44 @@ class common
     }
 
     /**
+     * Get XMLTV file
+     * Wrapper for datagutten\xmltv\tools\common\files with project specific exception
+     * @param string $channel XMLTV channel id
+     * @param int $timestamp Timestamp for the date to get
+     * @param string $sub_folder Sub folder of channel folder
+     * @param string $extension File extension
+     * @param bool $create Create folder
+     * @return string File name
+     * @throws exceptions\XMLTVError
+     */
+    protected function file(string $channel, $timestamp = 0, $sub_folder = '', $extension = 'xml', $create = false)
+    {
+        try
+        {
+            return $this->files->file($channel, $timestamp, $sub_folder, $extension, $create);
+        }
+        catch (ChannelNotFoundException $e)
+        {
+            throw new exceptions\XMLTVError($e->getMessage(), 0, $e);
+        }
+    }
+
+    /**
      * @param string $extension File extension
      * @param int $timestamp Time stamp
      * @return string File name
+     * @throws exceptions\XMLTVError
      */
     public function local_file(int $timestamp, $extension = 'html')
     {
-        return $this->files->file($this->channel, $timestamp, 'raw_data', $extension, true);
+        return $this->file($this->channel, $timestamp, 'raw_data', $extension, true);
     }
 
     /**
      * @param string $extension File extension
      * @param int $timestamp Time stamp
      * @return string
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException|exceptions\XMLTVError
      */
     public function load_local_file($timestamp, $extension = 'html')
     {
@@ -119,15 +149,21 @@ class common
      * @param int $timestamp Time stamp for the day to grab
      * @return string File name
      * @codeCoverageIgnore
+     * @throws exceptions\GrabberException
      */
     public function grab($timestamp=0)
     {
         return $timestamp; //Dummy return to avoid warnings
     }
 
+    /**
+     * @param $timestamp
+     * @return string
+     * @throws exceptions\XMLTVError
+     */
     public function save_file($timestamp)
     {
-        $file = $this->files->file($this->channel, $timestamp);
+        $file = $this->file($this->channel, $timestamp);
         $xml_string = $this->tv->format_output();
         $this->files->filesystem->dumpFile($file, $xml_string);
         return $file;

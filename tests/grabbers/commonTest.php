@@ -4,6 +4,7 @@ namespace datagutten\xmltv\tests\grabbers;
 
 use datagutten\tools\files\files;
 use datagutten\xmltv\grabbers\base\common;
+use datagutten\xmltv\grabbers\exceptions;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Requests_Exception;
@@ -31,7 +32,8 @@ class commonTest extends TestCase
     }
 
     /**
-     * @throws Requests_Exception
+     * @throws exceptions\ConnectionError
+     * @throws exceptions\XMLTVError
      */
     public function testDownload()
     {

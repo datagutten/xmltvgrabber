@@ -4,7 +4,6 @@
 namespace datagutten\xmltv\grabbers\base;
 
 use datagutten\xmltv\tools\build\programme;
-use Requests_Exception;
 
 /**
  * Common grabber class for Discovery Networks
@@ -38,13 +37,7 @@ class discovery_no extends common
         foreach(array(strtotime('-1 day',$timestamp),$timestamp) as $day)
         {
             $url=sprintf($url_template,urlencode($channel),date('Y-m-d',$day));
-            try {
-                $data = $this->download_cache($url, $day, 'json');
-            } // @codeCoverageIgnoreStart
-            catch (Requests_Exception $e) {
-                echo 'Error loading data: '.$e->getMessage();
-                return null;
-            } // @codeCoverageIgnoreEnd
+            $data = $this->download_cache($url, $day, 'json');
 
             if ($data === '[]')
             {

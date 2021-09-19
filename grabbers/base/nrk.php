@@ -8,7 +8,6 @@ use datagutten\xmltv\tools\build\programme;
 use DateInterval;
 use DateTimeImmutable;
 use Exception;
-use Requests_Exception;
 
 /**
  * Grabber for NRK channels
@@ -35,14 +34,7 @@ abstract class nrk extends common
         foreach (array(strtotime('-1 day', $timestamp), $timestamp) as $day)
         {
             $url = sprintf('https://psapi.nrk.no/epg/%s?date=%s', $channel, date('Y-m-d',$day));
-            try {
-                $data = $this->download_cache($url, $day, 'json');
-
-            } // @codeCoverageIgnoreStart
-            catch (Requests_Exception $e) {
-                echo $e->getMessage();
-                return null;
-            } // @codeCoverageIgnoreEnd
+            $data = $this->download_cache($url, $day, 'json');
 
             $info = json_decode($data, true);
             foreach($info[0]['entries'] as $entry)

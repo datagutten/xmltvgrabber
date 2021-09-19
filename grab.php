@@ -1,6 +1,7 @@
 <?php
 
 use datagutten\xmltv\grabbers;
+use datagutten\xmltv\tools\exceptions\XMLTVException;
 
 require __DIR__.'/vendor/autoload.php';
 set_include_path(__DIR__);
@@ -29,7 +30,15 @@ foreach ($grabbers as $grabber_class) {
          * @var $grabber grabbers\base\common
          */
         $grabber = new $grabber_class;
-        $file = $grabber->grab($timestamp);
+        try
+        {
+            $file = $grabber->grab($timestamp);
+        }
+        catch (grabbers\exceptions\GrabberException|XMLTVException $e)
+        {
+            echo $e->getMessage()."\n";
+            continue;
+        }
         if(empty($file))
             echo "No file found\n";
         else

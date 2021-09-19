@@ -5,7 +5,6 @@ namespace datagutten\xmltv\grabbers\base;
 
 
 use datagutten\xmltv\tools\build\programme;
-use Requests_Exception;
 
 /**
  * Common grabber class for Disney
@@ -26,13 +25,7 @@ abstract class disney_no extends common
             $timestamp = strtotime('midnight');
         $channel = self::$channels[$this->channel];
         $url = sprintf('https://tv.disney.no/_schedule/full/%s/2/%s', date('Ymd',$timestamp), urlencode($channel));
-        try {
-            $data = $this->download_cache($url, $timestamp, 'json');
-        } // @codeCoverageIgnoreStart
-        catch (Requests_Exception $e) {
-            echo 'Error loading data: '.$e->getMessage();
-            return null;
-        } // @codeCoverageIgnoreEnd
+        $data = $this->download_cache($url, $timestamp, 'json');
 
         list($day_start, $day_end) = self::day_start_end($timestamp);
 
