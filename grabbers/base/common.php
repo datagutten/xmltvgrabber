@@ -7,8 +7,8 @@ use datagutten\xmltv\tools\build\tv;
 use datagutten\xmltv\tools\common\files;
 use datagutten\xmltv\tools\exceptions\ChannelNotFoundException;
 use FileNotFoundException;
-use Requests;
 use Requests_Exception;
+use Requests_Session;
 
 /**
  * Base class for all grabbers
@@ -27,6 +27,10 @@ class common
      * @var tv tv class
      */
     public $tv;
+    /**
+     * @var Requests_Session
+     */
+    protected $session;
 
     /**
      * common constructor.
@@ -40,30 +44,45 @@ class common
         $this->channel = $channel;
         $this->files = new files($config['xmltv_path'], $config['xmltv_sub_folders']);
         $this->tv = new tv($channel, $language);
+        $this->session = new Requests_Session();
     }
 
     /**
-     * Download and save the original data
-     * @param string $url URL
-     * @param string $extension Extension for saved file
-     * @param int $timestamp Timestamp for the saved file
-     * @return string
-     * @throws exceptions\ConnectionError|exceptions\XMLTVError
+     * HTTP GET request
+     * @param string $url URL to GET
+     * @return string Response body
+     * @throws exceptions\ConnectionError
      */
-    public function download($url, $timestamp=0, $extension='html')
+    protected function get(string $url)
     {
         try
         {
-            $response = Requests::get($url);
+            $response = $this->session->get($url);
             $response->throw_for_status();
         }
         catch (Requests_Exception $e)
         {
             throw new exceptions\ConnectionError($e->getMessage(), 0, $e);
         }
-        $file = $this->local_file($timestamp, $extension);
-        file_put_contents($file, $response->body);
+
         return $response->body;
+    }
+
+    /**
+     * Download and save the original data
+     * @param string $url URL
+     * @param int $timestamp Timestamp for the saved file
+     * @param string $extension Extension for saved file
+     * @return string
+     * @throws exceptions\ConnectionError
+     * @throws exceptions\XMLTVError
+     */
+    public function download(string $url, int $timestamp=0, string $extension='html')
+    {
+        $body = $this->get($url);
+        $file = $this->local_file($timestamp, $extension);
+        file_put_contents($file, $body);
+        return $body;
     }
 
     /**
