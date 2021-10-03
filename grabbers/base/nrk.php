@@ -39,7 +39,7 @@ abstract class nrk extends common
             $info = json_decode($data, true);
             foreach($info[0]['entries'] as $entry)
             {
-                $program_start = preg_replace('#/Date\(([0-9]+)000\+[0-9]+\)/#','$1', $entry['actualStart']);
+                $program_start = preg_replace('#/Date\(([0-9]+)[0-9]{3}\+[0-9]+\)/#','$1', $entry['actualStart']);
 
                 if($program_start<$day_start)
                     continue;
