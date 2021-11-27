@@ -64,8 +64,9 @@ abstract class vg_no extends common
                     $rating->addAttribute('system', 'IMDb');
                     $rating->addChild('value', $program['imdb']['rating']);
                 }
-
             }
+            if(empty($programme))
+                unlink($this->local_file($day));
         }
         return $this->save_file($timestamp);
     }

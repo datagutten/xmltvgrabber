@@ -51,7 +51,8 @@ abstract class tv2no extends common
 
             if (empty($data['channel']))
             {
-                echo sprintf("No data for %s\n", date('Y-m-d', $timestamp));
+                echo sprintf("No data for %s\n", date('Y-m-d', $day));
+                unlink($this->local_file($day));
                 continue;
             }
 
