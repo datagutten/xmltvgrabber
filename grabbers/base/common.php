@@ -182,7 +182,7 @@ class common
      */
     public function save_file($timestamp)
     {
-        $file = $this->file($this->channel, $timestamp);
+        $file = $this->file($this->channel, $timestamp, '', 'xml', true);
         $xml_string = $this->tv->format_output();
         $this->files->filesystem->dumpFile($file, $xml_string);
         return $file;
