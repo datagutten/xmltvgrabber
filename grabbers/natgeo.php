@@ -3,7 +3,6 @@ namespace  datagutten\xmltv\grabbers;
 use datagutten\xmltv\tools\build\programme;
 use DOMDocument;
 use DOMElement;
-use Requests_Exception;
 
 class natgeo extends base\common
 {
@@ -22,13 +21,7 @@ class natgeo extends base\common
         $dom=new DOMDocument;
 
         $url = sprintf('http://www.natgeotv.com/no/tvguide/natgeo/%s', date('Ymd',$timestamp));
-        try {
-            $data = $this->download_cache($url, $timestamp);
-        } // @codeCoverageIgnoreStart
-        catch (Requests_Exception $e) {
-            echo 'Error loading data: '.$e->getMessage();
-            return null;
-        } // @codeCoverageIgnoreEnd
+        $data = $this->download_cache($url, $timestamp);
 
         @$dom->loadHTML($data);
         $days = $dom->getElementById('acilia-schedule-list'); //div
