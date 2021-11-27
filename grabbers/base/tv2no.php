@@ -21,6 +21,7 @@ abstract class tv2no extends common
         'discovery.no' => 'discov',
         'animalplanet.discovery.no' => 'animal',
         'science.discovery.no' => 'dscitrek',
+        'nickelodeon.no' => 'nickelod',
     ];
 
     public function local_file(int $timestamp, $extension = 'html')

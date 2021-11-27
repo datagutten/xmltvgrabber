@@ -31,6 +31,7 @@ class grabbers
         'nrksuper.nrk.no' => nrksuper::class,
         'tv2.no' => tv2::class,
         'zebra.tv2.no' => tv2_zebra::class,
+        'nickelodeon.no' => nickelodeon_no::class,
         ];
 
     /**
