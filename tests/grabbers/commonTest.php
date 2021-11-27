@@ -22,6 +22,7 @@ class commonTest extends TestCase
     public function setUp(): void
     {
         $this->filesystem = new Filesystem();
+        $this->tearDown();
         $config = file_get_contents(__DIR__.'/test_config.php');
         $config = str_replace('__DIR__', __DIR__, $config);
         file_put_contents(__DIR__.'/config.php', $config);
@@ -64,6 +65,7 @@ class commonTest extends TestCase
     public function tearDown(): void
     {
         $this->filesystem->remove(__DIR__.'/xmltv_test');
-        unlink(__DIR__.'/config.php');
+        if(file_exists(__DIR__.'/config.php'))
+            unlink(__DIR__.'/config.php');
     }
 }
