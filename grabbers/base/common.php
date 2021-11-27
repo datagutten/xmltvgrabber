@@ -183,6 +183,9 @@ class common
     public function save_file($timestamp)
     {
         $file = $this->file($this->channel, $timestamp, '', 'xml', true);
+        $count = $this->tv->xml->{'programme'}->count();
+        if ($count == 0)
+            return null;
         $xml_string = $this->tv->format_output();
         $this->files->filesystem->dumpFile($file, $xml_string);
         return $file;
