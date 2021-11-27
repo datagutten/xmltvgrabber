@@ -59,6 +59,7 @@ jobs:
         with:
           coverage: xdebug
           extensions: libxml, json, dom, curl
+          php-version: 8.0
 
       - name: Install dependencies
         run: composer update --prefer-lowest --no-progress
