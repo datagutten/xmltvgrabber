@@ -4,7 +4,7 @@
 namespace datagutten\xmltv\grabbers;
 
 
-class discovery_science_no extends base\discovery_no
+class discovery_science_no extends base\tv2no
 {
     function __construct()
     {

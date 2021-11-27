@@ -18,7 +18,9 @@ abstract class tv2no extends common
         'nyhet.tv2.no' => 'tv2nyhet',
         'sport1.tv2.no' => 'S01',
         'sport2.tv2.no' => 'S02',
-        'discovery.no' => 'dischd',
+        'discovery.no' => 'discov',
+        'animalplanet.discovery.no' => 'animal',
+        'science.discovery.no' => 'dscitrek',
     ];
 
     public function local_file(int $timestamp, $extension = 'html')
@@ -84,7 +86,7 @@ abstract class tv2no extends common
                         $programme->xml->addChild('category', $program['genre']);
 
                     if (!empty($program['epnr'])) //Add episode information
-                        $programme->series(intval($program['epnr']), intval($program['season']), intval($program['eptot']));
+                        $programme->series(intval($program['epnr']), intval($program['season']), intval($program['eptot'] ?? 0));
 
                     if ($program['isrepl'])
                         $programme->xml->addChild('previously-shown');
