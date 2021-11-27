@@ -95,7 +95,7 @@ class discovery_no extends common
             if (!empty($attributes['eventName']))
                 $programme->sub_title($attributes['eventName']);
 
-            if (!empty($program['shortDescription']))
+            if (!empty($attributes['description']))
                 $programme->description($attributes['description']);
 
             if (!empty($attributes['episode']))

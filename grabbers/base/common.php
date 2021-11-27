@@ -7,8 +7,7 @@ use datagutten\xmltv\tools\build\tv;
 use datagutten\xmltv\tools\common\files;
 use datagutten\xmltv\tools\exceptions\ChannelNotFoundException;
 use FileNotFoundException;
-use Requests_Exception;
-use Requests_Session;
+use WpOrg\Requests;
 
 /**
  * Base class for all grabbers
@@ -28,7 +27,7 @@ class common
      */
     public $tv;
     /**
-     * @var Requests_Session
+     * @var Requests\Session
      */
     protected $session;
 
@@ -44,7 +43,7 @@ class common
         $this->channel = $channel;
         $this->files = new files($config['xmltv_path'], $config['xmltv_sub_folders']);
         $this->tv = new tv($channel, $language);
-        $this->session = new Requests_Session();
+        $this->session = new Requests\Session();
     }
 
     /**
@@ -60,7 +59,7 @@ class common
             $response = $this->session->get($url);
             $response->throw_for_status();
         }
-        catch (Requests_Exception $e)
+        catch (Requests\Exception $e)
         {
             throw new exceptions\ConnectionError($e->getMessage(), 0, $e);
         }

@@ -7,7 +7,6 @@ use datagutten\xmltv\grabbers\base\common;
 use datagutten\xmltv\grabbers\exceptions;
 use Exception;
 use PHPUnit\Framework\TestCase;
-use Requests_Exception;
 use Symfony\Component\Filesystem\Filesystem;
 
 class commonTest extends TestCase

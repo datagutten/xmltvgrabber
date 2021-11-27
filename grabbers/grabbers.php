@@ -27,6 +27,7 @@ class grabbers
         'nrk1.nrk.no' => nrk1::class,
         'nrk2.nrk.no' => nrk2::class,
         'nrk3.nrk.no' => nrk3::class,
+        'cbsreality.com' => cbsreality::class,
         'nrksuper.nrk.no' => nrksuper::class,
         'tv2.no' => tv2::class,
         'zebra.tv2.no' => tv2_zebra::class,
