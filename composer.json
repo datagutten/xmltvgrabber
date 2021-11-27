@@ -16,7 +16,8 @@
         "ext-simplexml": "*",
         "datagutten/tools": "^1.8",
         "datagutten/xmltvtools": "^3.0",
-        "rmccue/requests": "^2.0"
+        "rmccue/requests": "^2.0",
+        "symfony/process": "^5.3"
     },
     "autoload": {
         "psr-4": {

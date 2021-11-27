@@ -32,6 +32,7 @@ class grabbers
         'tv2.no' => tv2::class,
         'zebra.tv2.no' => tv2_zebra::class,
         'nickelodeon.no' => nickelodeon_no::class,
+        'boomerangtv.no' => boomerang::class,
         ];
 
     /**
