@@ -1,7 +1,6 @@
 <?php
 
 use datagutten\xmltv\grabbers;
-use datagutten\xmltv\tools\exceptions\XMLTVException;
 
 require __DIR__.'/vendor/autoload.php';
 set_include_path(__DIR__);
@@ -34,7 +33,7 @@ foreach ($grabbers as $grabber_class) {
         {
             $file = $grabber->grab($timestamp);
         }
-        catch (grabbers\exceptions\GrabberException|XMLTVException $e)
+        catch (grabbers\exceptions\GrabberException $e)
         {
             echo $e->getMessage()."\n";
             continue;
