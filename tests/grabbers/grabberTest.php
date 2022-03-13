@@ -21,7 +21,7 @@ class grabberTest extends TestCase
         $config = str_replace('__DIR__', __DIR__, $config);
         file_put_contents(__DIR__.'/config.php', $config);
         set_include_path(__DIR__);
-        mkdir(__DIR__.'/xmltv_test');
+        @mkdir(__DIR__.'/xmltv_test');
     }
 
     /**
