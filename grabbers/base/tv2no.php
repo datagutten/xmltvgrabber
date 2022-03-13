@@ -34,18 +34,17 @@ abstract class tv2no extends common
             $url = sprintf('https://rest.tv2.no/epg-dw-rest/epg/program/%s/', date('Y/m/d', $day));
             $json_raw = $this->download_cache($url, $day, 'json');
             $data = json_decode($json_raw, true);
-            if(empty($data))
-                continue;
-            $channel_ids = array_column($data['channel'], 'shortName');
-            if (array_search(static::$slug, $channel_ids) === false)
-                throw new exceptions\GrabberException(sprintf('Unknown channel slug: %s', static::$slug));
 
             if (empty($data['channel']))
             {
-                echo sprintf("No data for %s\n", date('Y-m-d', $day));
-                unlink($this->local_file($day));
+                //echo sprintf("No data for %s\n", date('Y-m-d', $day));
+                unlink($this->local_file($day, 'json'));
                 continue;
             }
+
+            $channel_ids = array_column($data['channel'], 'shortName');
+            if (array_search(static::$slug, $channel_ids) === false)
+                throw new exceptions\GrabberException(sprintf('Unknown channel slug: %s', static::$slug));
 
             foreach ($data['channel'] as $channel)
             {
