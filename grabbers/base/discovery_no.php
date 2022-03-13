@@ -10,45 +10,31 @@ use DateTimeImmutable;
 /**
  * Common grabber class for Discovery Networks
  */
-class discovery_no extends common
+abstract class discovery_no extends common
 {
     /**
-     * @var string[] Channel name and IDs
+     * @var string Internal Discovery channel id
      */
-    public static $channels = [
-        'tvnorge.no' => 'no.sbsdiscovery.channel.tvn',
-        'fem.no' => 'no.sbsdiscovery.channel.fem',
-        'max.no' => 'no.sbsdiscovery.channel.max',
-        'voxtv.no' => 'no.sbsdiscovery.channel.vox',
-        //'animalplanet.discovery.no'  => 'Animal Planet',
-        'tlc.discovery.no' => 'TLCN',
-        //'discovery.no'               => 'Discovery Channel',
-        'investigation.discovery.no' => 'IDXE',
-        //'science.discovery.no'       => 'Discovery Science',
-    ];
+    public static string $discovery_id;
+    public static string $language = 'nb';
 
     /**
      * Get EPG URL
-     * @param string $xmltv_channel XMLTV channel string
      * @param int $timestamp
      * @return string URL string
-     * @throws exceptions\GrabberException Unknown channel id
      */
-    public static function get_url(string $xmltv_channel, int $timestamp): string
+    public static function get_url(int $timestamp): string
     {
         $date = new DateTimeImmutable();
         $date = $date->setTimestamp($timestamp);
         $day_start = $date->setTime(0, 0);
         $day_end = $date->setTime(23, 59, 59);
         $date_format = 'Y-m-d\TH:i:s.v\Z';
-        if (!isset(self::$channels[$xmltv_channel]))
-            throw new exceptions\GrabberException(sprintf('Unknown channel id: %s', $xmltv_channel));
 
-        $channel = self::$channels[$xmltv_channel];
         $url_template = 'https://disco-api.discoveryplus.no/tvlistings/v2/channels/%s?startDate=%s&endDate=%s';
         return sprintf(
             $url_template,
-            $channel,
+            static::$discovery_id,
             $day_start->format($date_format),
             $day_end->format($date_format)
         );
@@ -69,11 +55,14 @@ class discovery_no extends common
 
     function grab($timestamp = null)
     {
+        if(empty(static::$discovery_id))
+            throw new exceptions\GrabberException(sprintf('Channel id not defined in grabber %s', static::class));
+
         if (empty($timestamp))
             $timestamp = strtotime('midnight');
         $this->get_token();
 
-        $url = self::get_url($this->channel, $timestamp);
+        $url = self::get_url($timestamp);
         $data = $this->download_cache($url, $timestamp, 'json');
 
         $programs = json_decode($data, true);

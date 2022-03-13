@@ -6,8 +6,6 @@ namespace datagutten\xmltv\grabbers;
 
 class discovery_vox_no extends base\discovery_no
 {
-    function __construct()
-    {
-        parent::__construct('voxtv.no', 'nb');
-    }
+    public static string $xmltv_id = 'voxtv.no';
+    public static string $discovery_id = 'no.sbsdiscovery.channel.vox';
 }
