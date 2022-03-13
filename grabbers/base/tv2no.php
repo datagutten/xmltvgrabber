@@ -44,7 +44,7 @@ abstract class tv2no extends common
 
             $channel_ids = array_column($data['channel'], 'shortName');
             if (array_search(static::$slug, $channel_ids) === false)
-                throw new exceptions\GrabberException(sprintf('Unknown channel slug: %s', static::$slug));
+                throw new exceptions\GrabberException(sprintf('Unknown channel slug "%s" in grabber %s', static::$slug, static::class));
 
             foreach ($data['channel'] as $channel)
             {
