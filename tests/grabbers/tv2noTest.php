@@ -3,7 +3,6 @@
 namespace datagutten\xmltv\tests\grabbers;
 
 use datagutten\xmltv\grabbers;
-use PHPUnit\Framework\TestCase;
 
 class tv2_no_slug extends grabbers\base\tv2no
 {
@@ -16,7 +15,7 @@ class tv2_bad_slug extends grabbers\base\tv2no
     public static string $slug = 'foo';
 }
 
-class tv2noTest extends TestCase
+class tv2noTest extends grabberTestCase
 {
     public function testNoSlug()
     {

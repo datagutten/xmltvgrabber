@@ -5,26 +5,9 @@ namespace datagutten\xmltv\tests\grabbers;
 use datagutten\xmltv\grabbers;
 use datagutten\xmltv\tools\exceptions\ChannelNotFoundException;
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Filesystem\Filesystem;
 
-class grabberTest extends TestCase
+class grabberTest extends grabberTestCase
 {
-    /**
-     * @var Filesystem
-     */
-    public $filesystem;
-
-    public function setUp(): void
-    {
-        $this->filesystem = new Filesystem();
-        $config = file_get_contents(__DIR__.'/test_config.php');
-        $config = str_replace('__DIR__', __DIR__, $config);
-        file_put_contents(__DIR__.'/config.php', $config);
-        set_include_path(__DIR__);
-        @mkdir(__DIR__.'/xmltv_test');
-    }
-
     /**
      * @param string $id Channel id
      * @param string $grabber_class Grabber class name
@@ -44,11 +27,6 @@ class grabberTest extends TestCase
         $xml = simplexml_load_file($file);
         if(empty($xml->{'programme'}))
             $this->fail('<programme> missing or empty');
-    }
-    public function tearDown(): void
-    {
-        $this->filesystem->remove(__DIR__.'/xmltv_test');
-        unlink(__DIR__.'/config.php');
     }
 
     public function grabberProvider()
