@@ -3,6 +3,7 @@
 namespace datagutten\xmltv\tests\grabbers;
 
 use datagutten\xmltv\grabbers;
+use datagutten\xmltv\tools\exceptions\ChannelNotFoundException;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
@@ -63,26 +64,28 @@ class grabberTest extends TestCase
     public function dateProvider()
     {
         $dates = [];
-        foreach (array_keys(grabbers\base\discovery_no::$channels) as $channel) {
-            $dates[] = [$channel, '2011-06-01'];
-        }
+        foreach (grabbers\grabbers::getGrabbers() as $grabber)
+        {
+            $parents = class_parents($grabber);
+            if (in_array('datagutten\xmltv\grabbers\base\nrk', $parents))
+                continue;
 
-        foreach (array_keys(grabbers\base\disney_no::$channels) as $channel) {
-            $dates[] = [$channel, '2011-06-01'];
+            $dates[] = [$grabber, '2011-06-01'];
         }
 
         return $dates;
     }
 
     /**
-     * @param string $channel Channel id
+     * Most grabbers have limited history capability, use that to test if the grabber handles invalid dates
+     * @param string $grabber Grabber class
      * @param string $date Date
+     * @throws grabbers\exceptions\GrabberException|ChannelNotFoundException
      * @dataProvider dateProvider
      * @requires PHPUnit 9.1
      */
-    public function testInvalidDate($channel, $date)
+    public function testInvalidDate(string $grabber, string $date)
     {
-        $grabber = grabbers\grabbers::grabber($channel);
         /**
          * @var $grabber grabbers\base\common
          */
