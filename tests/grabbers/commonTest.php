@@ -1,4 +1,6 @@
-<?php
+<?php /** @noinspection PhpUnhandledExceptionInspection */
+
+/** @noinspection PhpMultipleClassesDeclarationsInOneFile */
 
 namespace datagutten\xmltv\tests\grabbers;
 
@@ -7,17 +9,35 @@ use datagutten\xmltv\grabbers\base\common;
 use datagutten\xmltv\grabbers\exceptions;
 use Exception;
 
+class DummyChannel extends common
+{
+    public static string $xmltv_id = 'test.no';
+    public static string $language = 'nb';
+
+    /**
+     * Dummy method to call file with create=false to get coverage on exception handler
+     * @param int $timestamp
+     * @param string $extension
+     * @return string
+     * @throws exceptions\XMLTVError
+     */
+    public function local_file_no_create(int $timestamp, string $extension = 'html')
+    {
+        return $this->file($this->channel, $timestamp, 'raw_data', $extension, false);
+    }
+}
+
 class commonTest extends grabberTestCase
 {
     /**
-     * @var common
+     * @var DummyChannel
      */
-    public common $common;
+    public DummyChannel $common;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->common = new common('test.no', 'nb');
+        $this->common = new DummyChannel();
     }
 
     /**
@@ -49,5 +69,11 @@ class commonTest extends grabberTestCase
         $expected_file = files::path_join(__DIR__, 'xmltv_test', 'test.no', 'raw_data', '2019',
             'test.no_2019-08-15.json');
         $this->assertEquals($expected_file, $file);
+    }
+
+    public function testLocal_fileNotFound()
+    {
+        $this->expectException(exceptions\XMLTVError::class);
+        $this->common->local_file_no_create(strtotime('2019-08-15'), 'json');
     }
 }
