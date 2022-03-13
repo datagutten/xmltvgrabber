@@ -38,7 +38,7 @@ jobs:
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
       - name: Cache raw data
-        id: composer-cache
+        id: data-cache
         uses: actions/cache@v2
         with:
           path: tests/grabbers/xmltv_test/*/raw_data
