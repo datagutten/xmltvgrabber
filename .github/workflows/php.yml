@@ -56,6 +56,8 @@ jobs:
 
       - name: Run tests
         run: vendor/bin/phpunit
+        env:
+          XMLTVGRABBER_KEEP_CACHE: true
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
@@ -77,6 +79,8 @@ jobs:
 
       - name: Run tests
         run: vendor/bin/phpunit
+        env:
+          XMLTVGRABBER_KEEP_CACHE: true
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
@@ -97,6 +101,8 @@ jobs:
 
       - name: Run tests
         run: vendor/bin/phpunit
+        env:
+          XMLTVGRABBER_KEEP_CACHE: true
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
