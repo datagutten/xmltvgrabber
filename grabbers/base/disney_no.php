@@ -11,6 +11,7 @@ use datagutten\xmltv\tools\build\programme;
  */
 abstract class disney_no extends common
 {
+    public static string $language = 'nb';
     /**
      * @var string[] Channel name and IDs
      */
