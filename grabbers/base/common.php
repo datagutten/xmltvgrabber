@@ -92,7 +92,14 @@ class common
      */
     public function download(string $url, int $timestamp = 0, string $extension = 'html', int $timeout = 10, array $headers = [])
     {
-        $body = $this->get($url, $headers, ['timeout' => $timeout]);
+        try
+        {
+            $body = $this->get($url, $headers, ['timeout' => 2]);
+        }
+        catch (exceptions\ConnectionError $e)
+        {
+            $body = $this->get($url, $headers, ['timeout' => $timeout]);
+        }
         $file = $this->local_file($timestamp, $extension);
         file_put_contents($file, $body);
         return $body;
