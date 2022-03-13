@@ -46,9 +46,9 @@ class grabberTest extends grabberTestCase
         {
             $parents = class_parents($grabber);
             if (in_array('datagutten\xmltv\grabbers\base\nrk', $parents))
-                continue;
-
-            $dates[] = [$grabber, '2011-06-01'];
+                $dates[] = [$grabber, '1900-01-01'];
+            else
+                $dates[] = [$grabber, '2011-06-01'];
         }
 
         return $dates;
