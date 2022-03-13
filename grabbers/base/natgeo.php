@@ -1,6 +1,6 @@
 <?Php
 namespace datagutten\xmltv\grabbers\base;
-use datagutten\xmltv\grabbers\exceptions\GrabberException;
+use datagutten\xmltv\grabbers\exceptions;
 use datagutten\xmltv\tools\build\programme;
 use DOMDocument;
 use DOMElement;
@@ -15,6 +15,9 @@ abstract class natgeo extends common
 
     function grab($timestamp=null)
     {
+        if(empty(static::$slug))
+            throw new exceptions\GrabberException(sprintf('Channel slug not defined in grabber %s', static::class));
+
         if(empty($timestamp))
             $timestamp = strtotime('midnight');
 
@@ -25,7 +28,7 @@ abstract class natgeo extends common
         if (array_key_exists(static::$language, static::$language_paths))
             $path = static::$language_paths[static::$language];
         else
-            throw new GrabberException('Invalid language ' . static::$language);
+            throw new exceptions\GrabberException(sprintf('Invalid language "%s" in grabber %s', static::$language, static::class));
 
         $url = sprintf('https://www.natgeotv.com/%s/%s/%s', $path, static::$slug, date('Ymd', $timestamp));
         $data = $this->download_cache($url, $timestamp);
