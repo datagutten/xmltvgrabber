@@ -25,8 +25,7 @@ abstract class grabberTestCase extends TestCase
 
     public function tearDown(): void
     {
-        if (getenv('XMLTVGRABBER_KEEP_CACHE') != 'true')
-            $this->filesystem->remove(__DIR__ . '/xmltv_test');
+        $this->filesystem->remove(__DIR__ . '/xmltv_test');
         $this->filesystem->remove(__DIR__ . '/config.php');
     }
 }

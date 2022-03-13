@@ -33,17 +33,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-php${{ matrix.php }}-
 
-      - name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-
-      - name: Cache raw data
-        id: data-cache
-        uses: actions/cache@v2
-        with:
-          path: tests/grabbers/xmltv_test/*/raw_data
-          key: data-${{ steps.date.outputs.date }}
-
       - name: Setup PHP with Xdebug
         uses: shivammathur/setup-php@v2
         with:
@@ -56,8 +45,6 @@ jobs:
 
       - name: Run tests
         run: vendor/bin/phpunit
-        env:
-          XMLTVGRABBER_KEEP_CACHE: true
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
@@ -79,8 +66,6 @@ jobs:
 
       - name: Run tests
         run: vendor/bin/phpunit
-        env:
-          XMLTVGRABBER_KEEP_CACHE: true
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
@@ -101,8 +86,6 @@ jobs:
 
       - name: Run tests
         run: vendor/bin/phpunit
-        env:
-          XMLTVGRABBER_KEEP_CACHE: true
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
