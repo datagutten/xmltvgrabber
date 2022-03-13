@@ -6,8 +6,6 @@ namespace datagutten\xmltv\grabbers;
 
 class discovery_animalplanet_no extends base\tv2no
 {
-    function __construct()
-    {
-        parent::__construct('animalplanet.discovery.no', 'nb');
-    }
+    public static $slug = 'animal';
+    public static $xmltv_id = 'animalplanet.discovery.no';
 }

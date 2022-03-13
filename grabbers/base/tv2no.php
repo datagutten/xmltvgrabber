@@ -9,20 +9,15 @@ use datagutten\xmltv\grabbers\exceptions;
 abstract class tv2no extends common
 {
     /**
-     * @var string[] Channel name and IDs
+     * @var string TV2 channel slug
      */
-    public static $channels = [
-        'zebra.tv2.no' => 'tv2zebra',
-        'tv2.no' => 'tv2norge',
-        'livsstilhd.tv2.no' => 'tv2livsstil',
-        'nyhet.tv2.no' => 'tv2nyhet',
-        'sport1.tv2.no' => 'S01',
-        'sport2.tv2.no' => 'S02',
-        'discovery.no' => 'discov',
-        'animalplanet.discovery.no' => 'animal',
-        'science.discovery.no' => 'dscitrek',
-        'nickelodeon.no' => 'nickelod',
-    ];
+    public static $slug;
+    public static $language = 'nb';
+
+    function __construct()
+    {
+        parent::__construct(static::$xmltv_id, static::$language);
+    }
 
     public function local_file(int $timestamp, $extension = 'html')
     {
@@ -31,13 +26,12 @@ abstract class tv2no extends common
 
     function grab($timestamp = null)
     {
+        if(empty(static::$slug))
+            throw new exceptions\GrabberException(sprintf('Channel slug not defined in grabber %s', static::class));
+
         if (empty($timestamp))
             $timestamp = strtotime('midnight');
 
-        if (!isset(self::$channels[$this->channel]))
-            throw new exceptions\GrabberException(sprintf('Unknown channel id: %s', $this->channel));
-
-        $channel_id = self::$channels[$this->channel];
         list($day_start, $day_end) = self::day_start_end($timestamp);
 
         foreach (array(strtotime('-1 day', $timestamp), $timestamp) as $day)
@@ -46,8 +40,8 @@ abstract class tv2no extends common
             $json_raw = $this->download_cache($url, $day, 'json');
             $data = json_decode($json_raw, true);
             $channel_ids = array_column($data['channel'], 'shortName');
-            if (array_search($channel_id, $channel_ids) === false)
-                throw new exceptions\GrabberException(sprintf('Unknown channel short name: %s', $channel_id));
+            if (array_search(static::$slug, $channel_ids) === false)
+                throw new exceptions\GrabberException(sprintf('Unknown channel slug: %s', static::$slug));
 
             if (empty($data['channel']))
             {
@@ -58,7 +52,7 @@ abstract class tv2no extends common
 
             foreach ($data['channel'] as $channel)
             {
-                if ($channel['shortName'] != $channel_id)
+                if ($channel['shortName'] != static::$slug)
                     continue;
 
                 foreach ($channel['program'] as $program)

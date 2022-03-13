@@ -6,8 +6,6 @@ namespace datagutten\xmltv\grabbers;
 
 class discovery_channel_no extends base\tv2no
 {
-    function __construct()
-    {
-        parent::__construct('discovery.no', 'nb');
-    }
+    public static $slug = 'discov';
+    public static $xmltv_id = 'discovery.no';
 }
