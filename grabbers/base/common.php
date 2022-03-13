@@ -17,22 +17,23 @@ class common
     /**
      * @var string Current channel id
      */
-    public $channel;
+    public string $channel;
     /**
      * @var files Files class
      */
-    public $files;
+    public files $files;
     /**
      * @var tv tv class
      */
-    public $tv;
+    public tv $tv;
     /**
-     * @var Requests\Session
+     * @var Requests\Session Requests session
      */
-    protected $session;
+    protected Requests\Session $session;
 
     /**
-     * @var string Channel language
+     * @var string Channel language code according to RFC 1766
+     * @link https://en.wikipedia.org/wiki/IETF_language_tag
      */
     public static string $language;
     /**
