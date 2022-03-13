@@ -49,14 +49,16 @@ class common
     /**
      * HTTP GET request
      * @param string $url URL to GET
+     * @param array $headers Headers to pass to Requests::get
+     * @param array $options Options to pass to Requests::get
      * @return string Response body
      * @throws exceptions\ConnectionError
      */
-    protected function get(string $url)
+    protected function get(string $url, array $headers = [], array $options = [])
     {
         try
         {
-            $response = $this->session->get($url);
+            $response = $this->session->get($url, $headers, $options);
             $response->throw_for_status();
         }
         catch (Requests\Exception $e)
@@ -72,31 +74,39 @@ class common
      * @param string $url URL
      * @param int $timestamp Timestamp for the saved file
      * @param string $extension Extension for saved file
+     * @param int $timeout HTTP requests timeout in seconds
+     * @param array $headers HTTP headers to add to the request
      * @return string
      * @throws exceptions\ConnectionError
      * @throws exceptions\XMLTVError
      */
-    public function download(string $url, int $timestamp=0, string $extension='html')
+    public function download(string $url, int $timestamp = 0, string $extension = 'html', int $timeout = 10, array $headers = [])
     {
-        $body = $this->get($url);
+        $body = $this->get($url, $headers, ['timeout' => $timeout]);
         $file = $this->local_file($timestamp, $extension);
         file_put_contents($file, $body);
         return $body;
     }
 
     /**
-     * @param $url
-     * @param null $timestamp
-     * @param string $extension
+     * Download and save the original data if not cached
+     * @param string $url URL
+     * @param int|null $timestamp Timestamp for the saved file
+     * @param string $extension Extension for saved file
+     * @param int $timeout HTTP requests timeout in seconds
+     * @param array $headers HTTP headers to add to the request
      * @return string
      * @throws exceptions\ConnectionError|exceptions\XMLTVError
      */
-    public function download_cache($url, $timestamp=null, $extension='html')
+    public function download_cache(string $url, int $timestamp = null, string $extension = 'html', int $timeout = 10, array $headers = [])
     {
-        try {
+        try
+        {
             return $this->load_local_file($timestamp, $extension);
-        } catch (FileNotFoundException $e) {
-            return $this->download($url, $timestamp, $extension);
+        }
+        catch (FileNotFoundException $e)
+        {
+            return $this->download($url, $timestamp, $extension, $timeout, $headers);
         }
     }
 
