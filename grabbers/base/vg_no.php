@@ -32,7 +32,7 @@ abstract class vg_no extends common
         foreach (array(strtotime('-1 day', $timestamp), $timestamp) as $day)
         {
             $url = self::get_url(static::$slug, $day);
-            $html = $this->download_cache($url, $day);
+            $html = $this->download_cache($url, $day, 'html', 30);
             preg_match('#<script>(__INITIAL_STATE__.+)</script>#', $html, $matches);
             $data = self::parse_js_array($matches[1], '__INITIAL_STATE__');
             foreach ($data['schedule']['broadcasts'] as $program)
