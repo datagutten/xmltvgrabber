@@ -1,15 +1,17 @@
 <?Php
-namespace  datagutten\xmltv\grabbers;
+namespace datagutten\xmltv\grabbers\base;
+use datagutten\xmltv\grabbers\exceptions\GrabberException;
 use datagutten\xmltv\tools\build\programme;
 use DOMDocument;
 use DOMElement;
 
-class natgeo extends base\common
+abstract class natgeo extends common
 {
-    function __construct()
-    {
-        parent::__construct('natgeo.no', 'nb');
-    }
+    /**
+     * @var string Natgeo channel slug
+     */
+    public static string $slug;
+    public static array $language_paths = ['nb' => 'no/tvguide', 'da' => 'dk/programoversigt', 'sv' => 'se/tabla'];
 
     function grab($timestamp=null)
     {
@@ -20,7 +22,12 @@ class natgeo extends base\common
 
         $dom=new DOMDocument;
 
-        $url = sprintf('http://www.natgeotv.com/no/tvguide/natgeo/%s', date('Ymd',$timestamp));
+        if (array_key_exists(static::$language, static::$language_paths))
+            $path = static::$language_paths[static::$language];
+        else
+            throw new GrabberException('Invalid language ' . static::$language);
+
+        $url = sprintf('https://www.natgeotv.com/%s/%s/%s', $path, static::$slug, date('Ymd', $timestamp));
         $data = $this->download_cache($url, $timestamp);
 
         @$dom->loadHTML($data);

@@ -14,7 +14,6 @@ class grabbers
      * @var base\common[]
      */
     public static $grabbers = [
-        'natgeo.no' => natgeo::class,
         'disneychannel.no' => disney_channel::class,
         'junior.disneychannel.no' => disney_junior::class,
         'tvnorge.no' => discovery_tvnorge::class,
