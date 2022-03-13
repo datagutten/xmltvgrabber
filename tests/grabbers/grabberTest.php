@@ -99,6 +99,12 @@ class grabberTest extends TestCase
         $this->assertEquals(grabbers\discovery_max_no::class, $class);
     }
 
+    public function testGetGrabbers()
+    {
+        $grabbers = grabbers\grabbers::getGrabbers();
+        $this->assertArrayHasKey('nyhet.tv2.no', $grabbers);
+    }
+
     public function testInvalidGrabber()
     {
         $this->expectException(InvalidArgumentException::class);
