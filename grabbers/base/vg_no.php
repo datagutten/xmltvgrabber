@@ -7,14 +7,8 @@ use Symfony\Component\Process\Process;
 
 abstract class vg_no extends common
 {
-    public static $slug;
-    public static $xmltv_id;
-    public static $language = 'nb';
-
-    function __construct()
-    {
-        parent::__construct(static::$xmltv_id, static::$language);
-    }
+    public static string $slug;
+    public static string $language = 'nb';
 
     public static function get_url(string $slug, int $timestamp)
     {

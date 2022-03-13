@@ -11,13 +11,8 @@ abstract class tv2no extends common
     /**
      * @var string TV2 channel slug
      */
-    public static $slug;
-    public static $language = 'nb';
-
-    function __construct()
-    {
-        parent::__construct(static::$xmltv_id, static::$language);
-    }
+    public static string $slug;
+    public static string $language = 'nb';
 
     public function local_file(int $timestamp, $extension = 'html')
     {

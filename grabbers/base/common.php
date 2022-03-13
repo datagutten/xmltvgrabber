@@ -32,17 +32,26 @@ class common
     protected $session;
 
     /**
+     * @var string Channel language
+     */
+    public static string $language;
+    /**
+     * @var string XMLTV DNS-like channel id
+     */
+    public static string $xmltv_id;
+
+    /**
      * common constructor.
-     * @param $channel
-     * @param $language
+     * @param ?string $channel XMLTV DNS-like id
+     * @param ?string $language
      * @throws FileNotFoundException
      */
-    public function __construct($channel, $language)
+    public function __construct(string $channel = null, string $language = null)
     {
         $config = require 'config.php';
-        $this->channel = $channel;
+        $this->channel = $channel ?? static::$xmltv_id;
         $this->files = new files($config['xmltv_path'], $config['xmltv_sub_folders']);
-        $this->tv = new tv($channel, $language);
+        $this->tv = new tv($channel ?? static::$xmltv_id, $language ?? static::$language);
         $this->session = new Requests\Session();
     }
 
