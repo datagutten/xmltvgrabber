@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c19b5eae3b39e308e93bc25c383cf9ce",
+    "content-hash": "ab30d4d6155b669f80c0ce1169ba5d70",
     "packages": [
         {
             "name": "datagutten/tools",
@@ -57,16 +57,16 @@
         },
         {
             "name": "datagutten/xmltvtools",
-            "version": "v3.4.1",
+            "version": "v3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/datagutten/xmltvtools.git",
-                "reference": "8335fe141a7b3fc288d8257b2ce4c33e34ef40e0"
+                "reference": "20b9aa96f2f97a60af089b9d1133e2f67e80576e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/datagutten/xmltvtools/zipball/8335fe141a7b3fc288d8257b2ce4c33e34ef40e0",
-                "reference": "8335fe141a7b3fc288d8257b2ce4c33e34ef40e0",
+                "url": "https://api.github.com/repos/datagutten/xmltvtools/zipball/20b9aa96f2f97a60af089b9d1133e2f67e80576e",
+                "reference": "20b9aa96f2f97a60af089b9d1133e2f67e80576e",
                 "shasum": ""
             },
             "require": {
@@ -74,14 +74,12 @@
                 "ext-dom": "*",
                 "ext-libxml": "*",
                 "ext-simplexml": "*",
-                "php": ">=7.1",
+                "php": ">=7.4",
                 "symfony/filesystem": "^4.3|^5.0"
             },
             "require-dev": {
                 "datagutten/video-tools": "^2.0",
-                "phpunit/phpunit": "^7.5|^8.4|^9",
-                "squizlabs/php_codesniffer": "^3.5",
-                "yoast/phpunit-polyfills": "^0.2|^1.0"
+                "phpunit/phpunit": "^9.4"
             },
             "suggest": {
                 "datagutten/video-tools": "Get duration of video files to calculate end time"
@@ -92,11 +90,11 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "datagutten\\xmltv\\tools\\": "xmltv",
-                    "datagutten\\xmltv\\tools\\exceptions\\": "xmltv/exceptions",
-                    "datagutten\\xmltv\\tests\\tools\\": "tests",
                     "datagutten\\dreambox\\": "dreambox",
-                    "datagutten\\dreambox\\tests\\": "tests/dreambox"
+                    "datagutten\\xmltv\\tools\\": "xmltv",
+                    "datagutten\\dreambox\\tests\\": "tests/dreambox",
+                    "datagutten\\xmltv\\tests\\tools\\": "tests",
+                    "datagutten\\xmltv\\tools\\exceptions\\": "xmltv/exceptions"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -112,9 +110,9 @@
             "description": "PHP class and tools to work with XMLTV files",
             "support": {
                 "issues": "https://github.com/datagutten/xmltvtools/issues",
-                "source": "https://github.com/datagutten/xmltvtools/tree/v3.4.1"
+                "source": "https://github.com/datagutten/xmltvtools/tree/v3.5.1"
             },
-            "time": "2021-07-17T07:59:42+00:00"
+            "time": "2021-12-23T14:27:46+00:00"
         },
         {
             "name": "rmccue/requests",
@@ -2513,5 +2511,5 @@
         "ext-simplexml": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.2.0"
 }
