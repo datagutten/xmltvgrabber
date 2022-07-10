@@ -2,7 +2,10 @@
 
 namespace datagutten\xmltv\grabbers\base;
 
+use datagutten\tools\files\files as file_tools;
+use datagutten\xmltv\grabbers\exceptions;
 use datagutten\xmltv\tools\build\programme;
+use DateTime;
 use Symfony\Component\Process\Process;
 
 abstract class vg_no extends common
@@ -13,6 +16,35 @@ abstract class vg_no extends common
     public static function get_url(string $slug, int $timestamp)
     {
         return sprintf('https://tvguide.vg.no/kanal/%s/%s', $slug, date('Y-m-d', $timestamp));
+    }
+
+    protected static function get_data($html): array
+    {
+        preg_match('#<script id="__NEXT_DATA__" type="application/json">(.+?)</script>#', $html, $matches);
+        return json_decode($matches[1], true);
+    }
+
+    /**
+     * @param string $topic
+     * @param string $slug
+     * @return mixed
+     * @throws exceptions\ConnectionError
+     */
+    public function get_element(string $topic, string $slug)
+    {
+        $folder = file_tools::path_join($this->files->xmltv_path, 'vg.no.metadata', $topic);
+        $cache_file = file_tools::path_join($folder, $slug . '.json');
+        if (file_exists($cache_file))
+            $data = json_decode(file_get_contents($cache_file), true);
+        else
+        {
+            $topic_mapping = ['movie' => 'film', 'series' => 'program'];
+            $this->files->filesystem->mkdir($folder);
+            $html = $this->get(sprintf('https://tvguide.vg.no/%s/%s', $topic_mapping[$topic], $slug));
+            $data = static::get_data($html);
+            file_put_contents($cache_file, json_encode($data));
+        }
+        return $data['props']['pageProps']['title'];
     }
 
     function grab($timestamp = null)
@@ -27,12 +59,12 @@ abstract class vg_no extends common
         {
             $url = self::get_url(static::$slug, $day);
             $html = $this->download_cache($url, $day, 'html', 30);
-            preg_match('#<script>(__INITIAL_STATE__.+)</script>#', $html, $matches);
-            $data = self::parse_js_array($matches[1], '__INITIAL_STATE__');
-            foreach ($data['schedule']['broadcasts'] as $program)
+            preg_match('#<script id="__NEXT_DATA__" type="application/json">(.+?)</script>#', $html, $matches);
+            $data = json_decode($matches[1], true);
+            foreach ($data['props']['pageProps']['initialTvSchedule']['listings'] as $program)
             {
-                $program_start = $program['broadcast']['startTime'] / 1000;
-                $program_end = $program['broadcast']['endTime'] / 1000;
+                $program_start = strtotime($program['startsAt']);
+                $program_end = strtotime($program['endsAt']);
 
                 if ($program_start < $day_start)
                     continue;
@@ -41,23 +73,41 @@ abstract class vg_no extends common
 
                 $programme = new programme($program_start, $this->tv);
                 $programme->stop($program_end);
-                $programme->title($program['title']);
-                $programme->description($program['description']);
+                $programme->title($program['title']['title']);
 
-                if (!empty($program['year']))
-                    $programme->xml->addChild('date', $program['year']);
-
-                if (!empty($program['genres']))
+                if (in_array($program['title']['type'], ['movie', 'series']))
                 {
-                    foreach ($program['genres'] as $genre)
-                        $programme->xml->addChild('category', $genre);
+                    try
+                    {
+                        $info = $this->get_element($program['title']['type'], $program['title']['slug']);
+                        $programme->date(new DateTime($info['releasedAt']));
+                        if (!empty($info['imdbId']))
+                            $programme->url_imdb($info['imdbId']);
+                        foreach ($info['genres'] as $genre)
+                        {
+                            $programme->category($genre['name']);
+                        }
+                        if ($program['title']['type'] == 'movie')
+                            $programme->description($info['overview']);
+                    }
+                    catch (exceptions\ConnectionError $e)
+                    {
+                        trigger_error(sprintf('Unable to get information for %s', $program['title']['title']));
+                    }
+
+                    if ($program['title']['type'] == 'series')
+                    {
+                        $programme->series($program['episode']['episodeNumber'] ?? 0, $program['episode']['seasonNumber']);
+                        if (!empty($program['episode']['name']))
+                            $programme->sub_title($program['episode']['name']);
+                        $programme->description($program['episode']['overview']);
+                    }
                 }
-
-                if (!empty($program['imdb']['link']))
-                    $programme->xml->addChild('url', $program['imdb']['link']);
-
-                if (!empty($program['seasonNumber']))
-                    $programme->series($program['episodeNumber'] ?? 0, $program['seasonNumber']);
+                else
+                {
+                    $programme->description($program['episode']['overview']);
+                    $programme->date(new DateTime($program['releasedAt']));
+                }
 
                 if (!empty($program['imdb']))
                 {
@@ -66,7 +116,7 @@ abstract class vg_no extends common
                     $rating->addChild('value', $program['imdb']['rating']);
                 }
             }
-            if(empty($programme))
+            if (empty($programme))
                 unlink($this->local_file($day));
         }
         return $this->save_file($timestamp);
