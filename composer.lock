@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ab30d4d6155b669f80c0ce1169ba5d70",
+    "content-hash": "e6dd9506aa97e2124a08c02af2367baf",
     "packages": [
         {
             "name": "datagutten/tools",
@@ -57,16 +57,16 @@
         },
         {
             "name": "datagutten/xmltvtools",
-            "version": "v3.5.1",
+            "version": "v3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/datagutten/xmltvtools.git",
-                "reference": "20b9aa96f2f97a60af089b9d1133e2f67e80576e"
+                "reference": "6c09f772ed5a89f6aa90b7bc651c1b60dc02883a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/datagutten/xmltvtools/zipball/20b9aa96f2f97a60af089b9d1133e2f67e80576e",
-                "reference": "20b9aa96f2f97a60af089b9d1133e2f67e80576e",
+                "url": "https://api.github.com/repos/datagutten/xmltvtools/zipball/6c09f772ed5a89f6aa90b7bc651c1b60dc02883a",
+                "reference": "6c09f772ed5a89f6aa90b7bc651c1b60dc02883a",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
                 "datagutten/video-tools": "Get duration of video files to calculate end time"
             },
             "bin": [
-                "bin/recording_info.php"
+                "bin/recording_info"
             ],
             "type": "library",
             "autoload": {
@@ -110,9 +110,9 @@
             "description": "PHP class and tools to work with XMLTV files",
             "support": {
                 "issues": "https://github.com/datagutten/xmltvtools/issues",
-                "source": "https://github.com/datagutten/xmltvtools/tree/v3.5.1"
+                "source": "https://github.com/datagutten/xmltvtools/tree/v3.6"
             },
-            "time": "2021-12-23T14:27:46+00:00"
+            "time": "2022-07-10T11:04:13+00:00"
         },
         {
             "name": "rmccue/requests",
@@ -2511,5 +2511,5 @@
         "ext-simplexml": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }

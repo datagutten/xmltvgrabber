@@ -15,7 +15,7 @@
         "ext-json": "*",
         "ext-simplexml": "*",
         "datagutten/tools": "^1.8",
-        "datagutten/xmltvtools": "^3.2",
+        "datagutten/xmltvtools": "^3.6",
         "rmccue/requests": "^2.0",
         "symfony/process": "^5.3"
     },
