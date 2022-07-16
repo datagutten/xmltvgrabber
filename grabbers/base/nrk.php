@@ -4,6 +4,7 @@
 namespace datagutten\xmltv\grabbers\base;
 
 
+use datagutten\xmltv\grabbers\exceptions;
 use datagutten\xmltv\tools\build\programme;
 use DateInterval;
 use DateTimeImmutable;
@@ -37,6 +38,12 @@ abstract class nrk extends common
             $data = $this->download_cache($url, $day, 'json');
 
             $info = json_decode($data, true);
+            if (empty($info[0]['entries']))
+            {
+                unlink($this->local_file($day, 'json'));
+                continue;
+            }
+
             foreach($info[0]['entries'] as $entry)
             {
                 $program_start = preg_replace('#/Date\(([0-9]+)[0-9]{3}\+[0-9]+\)/#','$1', $entry['actualStart']);
@@ -74,9 +81,6 @@ abstract class nrk extends common
         if(!empty($programme))
             return $this->save_file($timestamp);
         else
-        {
-            unlink($this->local_file($timestamp, 'json'));
-            return null;
-        }
+            throw new exceptions\GrabberException(sprintf('No programs found for date %s', date('Y-m-d', $day)));
     }
 }

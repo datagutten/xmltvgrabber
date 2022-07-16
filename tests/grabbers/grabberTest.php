@@ -3,7 +3,6 @@
 namespace datagutten\xmltv\tests\grabbers;
 
 use datagutten\xmltv\grabbers;
-use datagutten\xmltv\tools\exceptions\ChannelNotFoundException;
 use InvalidArgumentException;
 
 class grabberTest extends grabberTestCase
@@ -42,13 +41,13 @@ class grabberTest extends grabberTestCase
     public function dateProvider()
     {
         $dates = [];
-        foreach (grabbers\grabbers::getGrabbers() as $grabber)
+        foreach (grabbers\grabbers::getGrabbers() as $id=>$grabber)
         {
             $parents = class_parents($grabber);
             if (in_array('datagutten\xmltv\grabbers\base\nrk', $parents))
-                $dates[] = [$grabber, '1900-01-01'];
+                $dates[$id] = [$grabber, '1900-01-01'];
             else
-                $dates[] = [$grabber, '2011-06-01'];
+                $dates[$id] = [$grabber, '2011-06-01'];
         }
 
         return $dates;
@@ -58,7 +57,7 @@ class grabberTest extends grabberTestCase
      * Most grabbers have limited history capability, use that to test if the grabber handles invalid dates
      * @param string $grabber Grabber class
      * @param string $date Date
-     * @throws grabbers\exceptions\GrabberException|ChannelNotFoundException
+     * @throws grabbers\exceptions\GrabberException
      * @dataProvider dateProvider
      * @requires PHPUnit 9.1
      */
@@ -68,10 +67,8 @@ class grabberTest extends grabberTestCase
          * @var $grabber grabbers\base\common
          */
         $grabber = new $grabber;
-        $result = $grabber->grab(strtotime($date));
-        $this->assertEmpty($result);
-        $file = $grabber->files->file($grabber->channel, strtotime($date));
-        $this->assertFileDoesNotExist($file);
+        $this->expectException(grabbers\exceptions\GrabberException::class);
+        $grabber->grab(strtotime($date));
     }
 
     public function testGetGrabber()

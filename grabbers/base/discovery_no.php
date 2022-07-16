@@ -70,7 +70,7 @@ abstract class discovery_no extends common
         {
             $cache_file = $this->local_file($timestamp, 'json');
             unlink($cache_file);
-            return null;
+            throw new exceptions\GrabberException(sprintf('No programs found for date %s', date('Y-m-d', $timestamp)));
         }
 
         foreach ($programs['data'] as $program)

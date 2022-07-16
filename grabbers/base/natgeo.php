@@ -35,6 +35,11 @@ abstract class natgeo extends common
 
         @$dom->loadHTML($data);
         $days = $dom->getElementById('acilia-schedule-list'); //div
+        if ($days->childNodes->length == 0)
+        {
+            unlink($this->local_file($timestamp));
+            throw new exceptions\GrabberException(sprintf('No programs found for date %s', date('Y-m-d', $timestamp)));
+        }
 
         /**
          * @var $day DOMElement section tag
@@ -78,6 +83,7 @@ abstract class natgeo extends common
                 }
             }
         }
+
         return $this->save_file($timestamp);
     }
 }

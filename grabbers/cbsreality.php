@@ -55,7 +55,7 @@ class cbsreality extends base\common
         {
             $cache_file = $this->local_file($timestamp);
             unlink($cache_file);
-            return null;
+            throw new exceptions\GrabberException(sprintf('No programs found for date %s', date('Y-m-d', $timestamp)));
         }
     }
 }

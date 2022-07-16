@@ -90,6 +90,10 @@ abstract class tv2no extends common
                 }
             }
         }
-        return $this->save_file($timestamp);
+
+        if(!empty($programme))
+            return $this->save_file($timestamp);
+        else
+            throw new exceptions\GrabberException(sprintf('No programs found for date %s', date('Y-m-d', $timestamp)));
     }
 }

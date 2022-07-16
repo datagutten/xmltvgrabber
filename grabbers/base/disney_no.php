@@ -3,7 +3,7 @@
 
 namespace datagutten\xmltv\grabbers\base;
 
-
+use datagutten\xmltv\grabbers\exceptions;
 use datagutten\xmltv\tools\build\programme;
 
 /**
@@ -65,7 +65,7 @@ abstract class disney_no extends common
         {
             $cache_file = $this->local_file($timestamp, 'json');
             unlink($cache_file);
-            return null;
+            throw new exceptions\GrabberException(sprintf('No programs found for date %s', date('Y-m-d', $timestamp)));
         }
     }
 }
