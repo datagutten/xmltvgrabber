@@ -63,6 +63,8 @@ abstract class vg_no extends common
             $data = json_decode($matches[1], true);
             foreach ($data['props']['pageProps']['initialTvSchedule']['listings'] as $program)
             {
+                if (isset($program_start) && strtotime($program['startsAt']) <= $program_start)
+                    continue;
                 $program_start = strtotime($program['startsAt']);
                 $program_end = strtotime($program['endsAt']);
 
