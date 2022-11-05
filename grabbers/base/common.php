@@ -42,6 +42,11 @@ class common
     public static string $xmltv_id;
 
     /**
+     * @var string
+     */
+    public static string $sub_folder;
+
+    /**
      * common constructor.
      * @param ?string $channel XMLTV DNS-like id
      * @param ?string $language
@@ -51,7 +56,7 @@ class common
     {
         $config = require 'config.php';
         $this->channel = $channel ?? static::$xmltv_id;
-        $this->files = new files($config['xmltv_path'], $config['xmltv_sub_folders']);
+        $this->files = new files($config['xmltv_path'], [static::$sub_folder ?? $config['xmltv_sub_folder']]);
         $this->tv = new tv($channel ?? static::$xmltv_id, $language ?? static::$language);
         $this->session = new Requests\Session();
     }
