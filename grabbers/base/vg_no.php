@@ -82,7 +82,8 @@ abstract class vg_no extends common
                     try
                     {
                         $info = $this->get_element($program['title']['type'], $program['title']['slug']);
-                        $programme->date(new DateTime($info['releasedAt']));
+                        if(!empty($info['releasedAt']))
+                            $programme->date(new DateTime($info['releasedAt']));
                         if (!empty($info['imdbId']))
                             $programme->url_imdb($info['imdbId']);
                         foreach ($info['genres'] as $genre)
@@ -110,7 +111,8 @@ abstract class vg_no extends common
                 {
                     if(!empty($program['episode']))
                         $programme->description($program['episode']['overview']);
-                    $programme->date(new DateTime($program['releasedAt']));
+                    if(!empty($program['releasedAt']))
+                        $programme->date(new DateTime($program['releasedAt']));
                 }
 
                 if (!empty($program['imdb']))
