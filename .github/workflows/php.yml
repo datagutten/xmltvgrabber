@@ -40,6 +40,7 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: xdebug
           extensions: libxml, json, dom, curl
+          ini-values: error_reporting = E_ALL
 
       - name: Install dependencies
         run: composer update --prefer-dist --no-progress
