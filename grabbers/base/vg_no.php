@@ -89,7 +89,7 @@ abstract class vg_no extends common
                         {
                             $programme->category($genre['name']);
                         }
-                        if ($program['title']['type'] == 'movie')
+                        if ($program['title']['type'] == 'movie' && !empty($info['overview']))
                             $programme->description($info['overview']);
                     }
                     catch (exceptions\ConnectionError $e)
@@ -97,17 +97,19 @@ abstract class vg_no extends common
                         trigger_error(sprintf('Unable to get information for %s', $program['title']['title']));
                     }
 
-                    if ($program['title']['type'] == 'series')
+                    if ($program['title']['type'] == 'series' && !empty($program['episode']))
                     {
                         $programme->series($program['episode']['episodeNumber'] ?? 0, $program['episode']['seasonNumber']);
                         if (!empty($program['episode']['name']))
                             $programme->sub_title($program['episode']['name']);
-                        $programme->description($program['episode']['overview']);
+                        if(!empty($program['episode']['overview']))
+                            $programme->description($program['episode']['overview']);
                     }
                 }
                 else
                 {
-                    $programme->description($program['episode']['overview']);
+                    if(!empty($program['episode']))
+                        $programme->description($program['episode']['overview']);
                     $programme->date(new DateTime($program['releasedAt']));
                 }
 
