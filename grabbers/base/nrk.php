@@ -73,9 +73,8 @@ abstract class nrk extends common
                 if(!empty($entry['description']))
                     $programme->description($entry['description']);
                 $programme->stop($end);
-                if(preg_match('#Sesong ([0-9]+) \(([0-9]+):([0-9]+)\)#', $entry['description'], $matches)) {
+                if (!empty($entry['description']) && preg_match('#Sesong ([0-9]+) \(([0-9]+):([0-9]+)\)#', $entry['description'], $matches))
                     $programme->series($matches[2], $matches[1], $matches[3], $matches[0]);
-                }
             }
         }
         if(!empty($programme))
