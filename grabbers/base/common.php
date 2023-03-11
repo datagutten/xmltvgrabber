@@ -3,6 +3,7 @@
 namespace datagutten\xmltv\grabbers\base;
 
 use datagutten\xmltv\grabbers\exceptions;
+use datagutten\xmltv\grabbers\exceptions\XMLTVError;
 use datagutten\xmltv\tools\build\tv;
 use datagutten\xmltv\tools\common\files;
 use datagutten\xmltv\tools\exceptions\ChannelNotFoundException;
@@ -136,14 +137,14 @@ class common
      * Get XMLTV file
      * Wrapper for datagutten\xmltv\tools\common\files with project specific exception
      * @param string $channel XMLTV channel id
-     * @param int $timestamp Timestamp for the date to get
-     * @param string $sub_folder Sub folder of channel folder
+     * @param ?int $timestamp Timestamp for the date to get
+     * @param ?string $sub_folder Sub folder of channel folder
      * @param string $extension File extension
      * @param bool $create Create folder
      * @return string File name
      * @throws exceptions\XMLTVError
      */
-    protected function file(string $channel, $timestamp = 0, $sub_folder = '', $extension = 'xml', $create = false)
+    protected function file(string $channel, int $timestamp = null, string $sub_folder = null, string $extension = 'xml', bool $create = false)
     {
         try
         {
@@ -161,7 +162,7 @@ class common
      * @return string File name
      * @throws exceptions\XMLTVError
      */
-    public function local_file(int $timestamp, $extension = 'html')
+    public function local_file(int $timestamp, string $extension = 'html')
     {
         return $this->file($this->channel, $timestamp, 'raw_data', $extension, true);
     }
@@ -172,7 +173,7 @@ class common
      * @return string
      * @throws FileNotFoundException|exceptions\XMLTVError
      */
-    public function load_local_file($timestamp, $extension = 'html')
+    public function load_local_file(int $timestamp, string $extension = 'html')
     {
         $file = $this->local_file($timestamp, $extension);
         if(file_exists($file))
@@ -188,7 +189,7 @@ class common
      * @param int $timestamp
      * @return array
      */
-    public static function day_start_end($timestamp)
+    public static function day_start_end(int $timestamp)
     {
         $day_start = strtotime('midnight', $timestamp);
         $day_end = strtotime('23:59', $timestamp);
@@ -197,23 +198,24 @@ class common
 
     /**
      * @param int $timestamp Time stamp for the day to grab
-     * @return string File name
+     * @return ?string File name
      * @codeCoverageIgnore
      * @throws exceptions\GrabberException
      */
-    public function grab($timestamp=0)
+    public function grab(int $timestamp = 0): ?string
     {
         return $timestamp; //Dummy return to avoid warnings
     }
 
     /**
-     * @param $timestamp
-     * @return string
-     * @throws exceptions\XMLTVError
+     * Save XML file
+     * @param int $timestamp
+     * @return ?string File name
+     * @throws XMLTVError
      */
-    public function save_file($timestamp)
+    public function save_file(int $timestamp): ?string
     {
-        $file = $this->file($this->channel, $timestamp, '', 'xml', true);
+        $file = $this->file($this->channel, $timestamp, null, 'xml', true);
         $count = $this->tv->xml->{'programme'}->count();
         if ($count == 0)
             return null;
