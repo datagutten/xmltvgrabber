@@ -17,6 +17,7 @@ class common
 {
     /**
      * @var string Current channel id
+     * @deprecated Use static::$xmltv_id
      */
     public string $channel;
     /**
@@ -53,10 +54,10 @@ class common
      * @param ?string $language
      * @throws FileNotFoundException
      */
-    public function __construct(string $channel = null, string $language = null)
+    public function __construct()
     {
         $config = require 'config.php';
-        $this->channel = $channel ?? static::$xmltv_id;
+        $this->channel = static::$xmltv_id;
         $this->files = new files($config['xmltv_path'], [static::$sub_folder ?? $config['xmltv_sub_folder']]);
         $this->tv = new tv($channel ?? static::$xmltv_id, $language ?? static::$language);
         $this->session = new Requests\Session();

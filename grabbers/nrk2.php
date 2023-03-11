@@ -6,8 +6,5 @@ namespace datagutten\xmltv\grabbers;
 
 class nrk2 extends base\nrk
 {
-    function __construct()
-    {
-        parent::__construct('nrk2.nrk.no', 'nb');
-    }
+    public static string $xmltv_id = 'nrk2.nrk.no';
 }

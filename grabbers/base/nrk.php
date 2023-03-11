@@ -15,6 +15,7 @@ use Exception;
  */
 abstract class nrk extends common
 {
+    public static string $language = 'nb';
     /**
      * @var string[] Channel name and IDs
      */

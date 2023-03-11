@@ -9,10 +9,8 @@ use DOMXPath;
 
 class cbsreality extends base\common
 {
-    function __construct()
-    {
-        parent::__construct('cbsreality.com', 'en');
-    }
+    public static string $language = 'en';
+    public static string $xmltv_id = 'cbsreality.com';
 
     function grab(int $timestamp = 0): ?string
     {
