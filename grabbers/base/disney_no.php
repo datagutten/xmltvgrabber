@@ -20,7 +20,7 @@ abstract class disney_no extends common
         'junior.disneychannel.no' => '/tv-oversikt/disney-junior',
     ];
 
-    function grab($timestamp=null)
+    function grab(int $timestamp = null): ?string
     {
         if (empty($timestamp))
             $timestamp = strtotime('midnight');

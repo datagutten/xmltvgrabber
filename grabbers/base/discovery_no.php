@@ -53,7 +53,7 @@ abstract class discovery_no extends common
         return $data['data']['attributes']['token'];
     }
 
-    function grab($timestamp = null)
+    function grab(int $timestamp = null): ?string
     {
         if(empty(static::$discovery_id))
             throw new exceptions\GrabberException(sprintf('Channel id not defined in grabber %s', static::class));

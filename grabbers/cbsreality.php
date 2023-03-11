@@ -14,7 +14,7 @@ class cbsreality extends base\common
         parent::__construct('cbsreality.com', 'en');
     }
 
-    function grab($timestamp = 0)
+    function grab(int $timestamp = 0): ?string
     {
         if (empty($timestamp))
             $timestamp = strtotime('midnight');
