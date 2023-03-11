@@ -25,6 +25,11 @@ class DummyChannel extends common
     {
         return $this->file($this->channel, $timestamp, 'raw_data', $extension, false);
     }
+
+    public function grab(int $timestamp = 0): ?string
+    {
+        return $timestamp; //Dummy method to avoid error
+    }
 }
 
 class commonTest extends grabberTestCase

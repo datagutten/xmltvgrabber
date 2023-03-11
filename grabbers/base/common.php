@@ -13,7 +13,7 @@ use WpOrg\Requests;
 /**
  * Base class for all grabbers
  */
-class common
+abstract class common
 {
     /**
      * @var string Current channel id
@@ -203,10 +203,7 @@ class common
      * @codeCoverageIgnore
      * @throws exceptions\GrabberException
      */
-    public function grab(int $timestamp = 0): ?string
-    {
-        return $timestamp; //Dummy return to avoid warnings
-    }
+    abstract public function grab(int $timestamp = 0): ?string;
 
     /**
      * Save XML file
