@@ -47,7 +47,7 @@ abstract class vg_no extends common
         return $data['props']['pageProps']['title'];
     }
 
-    function grab($timestamp = null)
+    function grab(int $timestamp = null): string
     {
         if (empty($timestamp))
             $timestamp = strtotime('midnight');

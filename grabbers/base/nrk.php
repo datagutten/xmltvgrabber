@@ -25,7 +25,7 @@ abstract class nrk extends common
         'nrksuper.nrk.no' => 'nrksuper',
     ];
 
-    function grab($timestamp = null)
+    function grab(int $timestamp = null): ?string
     {
         if (empty($timestamp))
             $timestamp = strtotime('midnight');
