@@ -81,4 +81,15 @@ class commonTest extends grabberTestCase
         $this->expectException(exceptions\XMLTVError::class);
         $this->common->local_file_no_create(strtotime('2019-08-15'), 'json');
     }
+
+    /**
+     * save_file should return null when no programs are added
+     * @throws exceptions\XMLTVError
+     */
+    function testSaveEmpty()
+    {
+        $this->common = new DummyChannel();
+        $file = $this->common->save_file(time());
+        $this->assertNull($file);
+    }
 }
