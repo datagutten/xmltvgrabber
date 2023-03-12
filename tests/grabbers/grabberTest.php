@@ -21,8 +21,7 @@ class grabberTest extends grabberTestCase
         $file = $grabber->grab();
         $this->assertNotEmpty($file);
         $this->assertFileExists($file);
-        $this->assertEquals($id, $grabber->channel);
-        $this->assertStringStartsWith($id, basename($file));
+        $this->assertStringStartsWith($grabber::$xmltv_id, basename($file));
         $xml = simplexml_load_file($file);
         if(empty($xml->{'programme'}))
             $this->fail('<programme> missing or empty');

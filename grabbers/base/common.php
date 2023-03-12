@@ -16,11 +16,6 @@ use WpOrg\Requests;
 abstract class common
 {
     /**
-     * @var string Current channel id
-     * @deprecated Use static::$xmltv_id
-     */
-    public string $channel;
-    /**
      * @var files Files class
      */
     public files $files;
@@ -213,7 +208,7 @@ abstract class common
      */
     public function save_file(int $timestamp): ?string
     {
-        $file = $this->file($this->channel, $timestamp, null, 'xml', true);
+        $file = $this->file(static::$xmltv_id, $timestamp, null, 'xml', true);
         $count = $this->tv->xml->{'programme'}->count();
         if ($count == 0)
             return null;

@@ -23,7 +23,7 @@ class DummyChannel extends common
      */
     public function local_file_no_create(int $timestamp, string $extension = 'html')
     {
-        return $this->file($this->channel, $timestamp, 'raw_data', $extension, false);
+        return $this->file(static::$xmltv_id, $timestamp, 'raw_data', $extension);
     }
 
     public function grab(int $timestamp = 0): ?string

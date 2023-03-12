@@ -24,7 +24,7 @@ abstract class disney_no extends common
     {
         if (empty($timestamp))
             $timestamp = strtotime('midnight');
-        $channel = self::$channels[$this->channel];
+        $channel = self::$channels[static::$xmltv_id];
         $url = sprintf('https://tv.disney.no/_schedule/full/%s/2/%s', date('Ymd',$timestamp), urlencode($channel));
         $data = $this->download_cache($url, $timestamp, 'json');
 
