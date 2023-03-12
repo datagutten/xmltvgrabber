@@ -39,9 +39,9 @@ class grabbers
     /**
      * Get grabber class
      * @param string $xmltv_id XMLTV DNS-like id
-     * @return base\common
+     * @return base\common Class name of grabber class
      */
-    public static function grabber(string $xmltv_id): base\common
+    public static function grabber(string $xmltv_id)
     {
         $grabbers = self::getGrabbers();
         if (isset($grabbers[$xmltv_id]))
