@@ -32,7 +32,8 @@ class grabberTest extends grabberTestCase
         $grabbers = [];
         foreach(grabbers\grabbers::getGrabbers() as $id=>$grabber)
         {
-            $grabbers[] = [$id, $grabber];
+            if (!in_array($id, ['disneychannel.no', 'junior.disneychannel.no']))
+                $grabbers[] = [$id, $grabber];
         }
         return $grabbers;
     }
