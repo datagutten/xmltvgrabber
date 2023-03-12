@@ -13,7 +13,7 @@ class grabbers
     /**
      * @var base\common[]
      */
-    public static $grabbers = [
+    public static array $grabbers = [
         'disneychannel.no' => disney_channel::class,
         'junior.disneychannel.no' => disney_junior::class,
         'tvnorge.no' => discovery_tvnorge::class,
@@ -41,7 +41,7 @@ class grabbers
      * @param string $xmltv_id XMLTV DNS-like id
      * @return base\common
      */
-    public static function grabber(string $xmltv_id)
+    public static function grabber(string $xmltv_id): base\common
     {
         $grabbers = self::getGrabbers();
         if (isset($grabbers[$xmltv_id]))
@@ -51,9 +51,9 @@ class grabbers
     }
 
     /**
-     * @return array
+     * @return base\common[]
      */
-    public static function getGrabbers()
+    public static function getGrabbers(): array
     {
         $grabbers = self::$grabbers;
         $iterator = new FilesystemIterator(__DIR__, FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS);
