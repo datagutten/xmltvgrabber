@@ -205,13 +205,14 @@ abstract class common
      * @param int $timestamp
      * @return ?string File name
      * @throws XMLTVError
+     * @throws exceptions\GrabberException No programs found
      */
     public function save_file(int $timestamp): ?string
     {
         $file = $this->file(static::$xmltv_id, $timestamp, null, 'xml', true);
         $count = $this->tv->xml->{'programme'}->count();
         if ($count == 0)
-            return null;
+            throw new exceptions\GrabberException(sprintf('No programs found for date %s', date('Y-m-d', $timestamp)));
         $xml_string = $this->tv->format_output();
         $this->files->filesystem->dumpFile($file, $xml_string);
         return $file;
