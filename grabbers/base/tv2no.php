@@ -34,6 +34,8 @@ abstract class tv2no extends common
             $url = sprintf('https://rest.tv2.no/epg-dw-rest/epg/program/%s/', date('Y/m/d', $day));
             $json_raw = $this->download_cache($url, $day, 'json');
             $data = json_decode($json_raw, true);
+            $local_file = $this->local_file($day, 'json');
+            $cache_age = time() - filemtime($local_file);
 
             if (empty($data['channel']))
             {
@@ -43,7 +45,15 @@ abstract class tv2no extends common
             }
 
             $channel_ids = array_column($data['channel'], 'shortName');
-            if (array_search(static::$slug, $channel_ids) === false)
+            //Clear the cache if data is missing
+            //Make sure the cache file is at least 30 minutes old to avoid infinite loops
+            if (!in_array(static::$slug, $channel_ids) && $cache_age > 1800)
+            {
+                unlink($local_file);
+                return $this->grab($timestamp);
+            }
+
+            if (!in_array(static::$slug, $channel_ids))
                 throw new exceptions\GrabberException(sprintf('Unknown channel slug "%s" in grabber %s', static::$slug, static::class));
 
             foreach ($data['channel'] as $channel)
