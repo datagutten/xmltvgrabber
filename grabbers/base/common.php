@@ -61,6 +61,9 @@ abstract class common
         else
             $folder = $config['xmltv_sub_folder'] . '_' . static::$folder_suffix;
 
+        if (!file_exists($config['xmltv_path']))
+            mkdir($config['xmltv_path'], 0777, true);
+
         $this->files = new files($config['xmltv_path'], [$folder]);
         $this->tv = new tv($channel ?? static::$xmltv_id, $language ?? static::$language);
         $this->session = new Requests\Session();
