@@ -5,6 +5,8 @@ namespace datagutten\xmltv\tests\grabbers;
 use datagutten\xmltv\grabbers;
 use InvalidArgumentException;
 
+date_default_timezone_set('Europe/Oslo');
+
 class grabberTest extends grabberTestCase
 {
     /**
