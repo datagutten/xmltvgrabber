@@ -89,7 +89,8 @@ class commonTest extends grabberTestCase
     function testSaveEmpty()
     {
         $this->common = new DummyChannel();
-        $file = $this->common->save_file(time());
-        $this->assertNull($file);
+        $this->expectException(exceptions\GrabberException::class);
+        $this->expectExceptionMessageMatches('/No programs found for date.+/');
+        $this->common->save_file(time());
     }
 }
