@@ -4,8 +4,8 @@
 namespace datagutten\xmltv\grabbers;
 
 
-class discovery_investigation_no extends base\discovery_no
+class discovery_investigation_no extends base\DiscoveryBaseNO
 {
-    public static string $discovery_id = 'IDXE';
+    protected static string $channel_slug = 'id';
     public static string $xmltv_id = 'investigation.discovery.no';
 }

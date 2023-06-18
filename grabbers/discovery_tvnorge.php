@@ -4,8 +4,8 @@
 namespace datagutten\xmltv\grabbers;
 
 
-class discovery_tvnorge extends base\discovery_no
+class discovery_tvnorge extends base\DiscoveryBaseNO
 {
-    public static string $discovery_id = 'no.sbsdiscovery.channel.tvn';
+    protected static string $channel_slug = 'tv-norge';
     public static string $xmltv_id = 'tvnorge.no';
 }

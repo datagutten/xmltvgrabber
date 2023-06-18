@@ -4,8 +4,8 @@
 namespace datagutten\xmltv\grabbers;
 
 
-class discovery_tlc_no extends base\discovery_no
+class discovery_tlc_no extends base\DiscoveryBaseNO
 {
-    public static string $discovery_id = 'TLCN';
+    protected static string $channel_slug = 'tlc-norway';
     public static string $xmltv_id = 'tlc.discovery.no';
 }
