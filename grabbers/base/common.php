@@ -83,7 +83,7 @@ abstract class common
         }
         catch (Requests\Exception $e)
         {
-            throw new exceptions\ConnectionError($e->getMessage(), 0, $e);
+            throw new exceptions\ConnectionError($e->getMessage(), $e->getCode(), $e);
         }
 
         return $response->body;
