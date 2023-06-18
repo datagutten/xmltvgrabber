@@ -44,16 +44,24 @@ abstract class common
     public static string $sub_folder;
 
     /**
+     * @var string Suffix added to sub folder and raw data folder
+     */
+    public static string $folder_suffix;
+
+    /**
      * common constructor.
-     * @param ?string $channel XMLTV DNS-like id
-     * @param ?string $language
      * @throws FileNotFoundException
      */
     public function __construct()
     {
         $config = require 'config.php';
-        $this->channel = static::$xmltv_id;
-        $this->files = new files($config['xmltv_path'], [static::$sub_folder ?? $config['xmltv_sub_folder']]);
+
+        if (empty(static::$folder_suffix))
+            $folder = $config['xmltv_sub_folder'];
+        else
+            $folder = $config['xmltv_sub_folder'] . '_' . static::$folder_suffix;
+
+        $this->files = new files($config['xmltv_path'], [$folder]);
         $this->tv = new tv($channel ?? static::$xmltv_id, $language ?? static::$language);
         $this->session = new Requests\Session();
     }
@@ -160,7 +168,10 @@ abstract class common
      */
     public function local_file(int $timestamp, string $extension = 'html')
     {
-        return $this->file($this->channel, $timestamp, 'raw_data', $extension, true);
+        if (!empty(static::$folder_suffix))
+            return $this->file(static::$xmltv_id, $timestamp, 'raw_data_' . static::$folder_suffix, $extension, true);
+        else
+            return $this->file(static::$xmltv_id, $timestamp, 'raw_data', $extension, true);
     }
 
     /**
