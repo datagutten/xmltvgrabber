@@ -12,6 +12,16 @@ abstract class DiscoveryBase extends common
     protected static array $channel_id = [];
     protected static string $channel_slug;
 
+    function __construct()
+    {
+        parent::__construct();
+        $this->session->headers += [
+            'Referer' => 'https://www.discoveryplus.com/',
+            'X-Disco-client' => 'WEB:UNKNOWN:dplus_us:2.21.0',
+            'X-disco-params' => sprintf('realm=dplay,bid=dplus,hn=www.discoveryplus.com,hth=%s,features=ar', static::$language)
+        ];
+    }
+
     /**
      * @inheritDoc
      * @throws GrabberException Unable to get token
