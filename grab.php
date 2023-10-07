@@ -13,7 +13,7 @@ else
 foreach ($grabbers as $grabber_class) {
 
     if (!isset($argv[2]))
-        $start_timestamp = time();
+        $start_timestamp = strtotime('midnight');
     else
         $start_timestamp = strtotime($argv[2]);
 
