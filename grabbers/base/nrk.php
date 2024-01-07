@@ -20,7 +20,7 @@ abstract class nrk extends common
      * @var string[] Channel name and IDs
      */
     public static $channels = [
-        'nrk1.nrk.no'     => 'nrk1_oslo_viken',
+        'nrk1.nrk.no'     => 'nrk1',
         'nrk2.nrk.no'     => 'nrk2',
         'nrk3.nrk.no'     => 'nrk3',
         'nrksuper.nrk.no' => 'nrksuper',
