@@ -130,7 +130,7 @@ abstract class DiscoveryBase extends common
             {
                 $programme->series(
                     intval($program['attributes']['customAttributes']['listingEpisodeNumber']),
-                    intval($program['attributes']['customAttributes']['listingSeasonNumber'])
+                    intval($program['attributes']['customAttributes']['listingSeasonNumber'] ?? null)
                 );
             }
             if (!empty($program['attributes']['customAttributes']['listingShowName']))
