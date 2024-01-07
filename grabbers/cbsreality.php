@@ -16,15 +16,15 @@ class cbsreality extends base\common
     {
         if (empty($timestamp))
             $timestamp = strtotime('midnight');
-        $url = sprintf('https://www.cbsreality.tv/eu_2/tv_guide.php?date=%s&section=day', date('Y-m-d', $timestamp));
+        $url = sprintf('https://www.cbsreality.tv/eu/tv_guide.php?date=%s', date('Y-m-d', $timestamp));
         $data = $this->download_cache($url, $timestamp);
 
         $dom = new DOMDocument();
         @$dom->loadHTML($data);
         $xpath = new DOMXPath($dom);
-        $content = $dom->getElementById('content');
-        $times = $xpath->query('./div[@class="tvguide-time"]', $content);
-        $shows = $xpath->query('./div[@class="tvguide-show"]', $content);
+        $content = $dom->getElementById('block-wide');
+        $times = $xpath->query('.//div[@class="tvguide-time"]', $content);
+        $shows = $xpath->query('.//div[@class="tvguide-show"]', $content);
         foreach ($shows as $key => $show)
         {
             $time = $times->item($key);
