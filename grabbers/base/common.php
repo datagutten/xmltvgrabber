@@ -29,6 +29,11 @@ abstract class common
     protected Requests\Session $session;
 
     /**
+     * @var bool Check if there is a newer version of cached data available
+     */
+    public static bool $refetch = false;
+
+    /**
      * @var string Channel language code according to RFC 1766
      * @link https://en.wikipedia.org/wiki/IETF_language_tag
      */
@@ -132,7 +137,30 @@ abstract class common
     {
         try
         {
-            return $this->load_local_file($timestamp, $extension);
+            $data = $this->load_local_file($timestamp, $extension);
+            if(static::$refetch)
+            {
+                $response = $this->session->head($url, $headers, ['timeout' => $timeout]);
+                if ($response->status_code == 200)
+                {
+                    if(!empty($response->headers['content-length']))
+                        $remote_size = $response->headers['content-length'];
+                    else
+                    {
+                        $data = $this->get($url, $headers, ['timeout' => $timeout]);
+                        $remote_size = strlen($data);
+                    }
+                    $file = $this->local_file($timestamp, $extension);
+                    $local_size = filesize($file);
+                    if ($local_size != $remote_size)
+                    {
+                        $bad_file = $this->local_file($timestamp, sprintf('%d.%s', $local_size, $extension));
+                        rename($file, $bad_file); //Rename existing file before downloading a new file
+                        return $this->download($url, $timestamp, $extension, $timeout, $headers);
+                    }
+                }
+            }
+            return $data;
         }
         catch (FileNotFoundException $e)
         {
