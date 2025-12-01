@@ -15,6 +15,7 @@ abstract class natgeo extends common
 
     function grab(int $timestamp=null): ?string
     {
+        $this->session->options['verify'] = false;
         if(empty(static::$slug))
             throw new exceptions\GrabberException(sprintf('Channel slug not defined in grabber %s', static::class));
 
