@@ -10,13 +10,13 @@
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": "^8.4",
         "ext-curl": "*",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-simplexml": "*",
         "datagutten/tools": "^1.8",
-        "datagutten/xmltvtools": "^3.6",
+        "datagutten/xmltvtools": "dev-master",
         "rmccue/requests": "^2.0",
         "symfony/process": "^5.3|^6"
     },
