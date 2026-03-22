@@ -20,7 +20,7 @@ abstract class tv2no extends common
         return $this->file('tv2.no', $timestamp, 'raw_data', $extension, true);
     }
 
-    function grab(int $timestamp = null): ?string
+    function grab(?int $timestamp = null): ?string
     {
         if (empty(static::$slug))
             throw new exceptions\GrabberException(sprintf('Channel slug not defined in grabber %s', static::class));

@@ -13,7 +13,7 @@ abstract class natgeo extends common
     public static string $slug;
     public static array $language_paths = ['nb' => 'no/tvguide', 'da' => 'dk/programoversigt', 'sv' => 'se/tabla'];
 
-    function grab(int $timestamp=null): ?string
+    function grab(?int $timestamp = null): ?string
     {
         $this->session->options['verify'] = false;
         if(empty(static::$slug))
