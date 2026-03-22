@@ -3,10 +3,15 @@
 namespace datagutten\xmltv\grabbers\base;
 
 use datagutten\xmltv\grabbers\exceptions;
-use datagutten\xmltv\grabbers\exceptions\XMLTVError;
 use datagutten\xmltv\tools\build\tv;
 use datagutten\xmltv\tools\common\files;
+use datagutten\xmltv\tools\data\BaseElement;
 use datagutten\xmltv\tools\exceptions\ChannelNotFoundException;
+use DateInvalidTimeZoneException;
+use DateMalformedStringException;
+use DateTimeImmutable;
+use DateTimeInterface;
+use DateTimeZone;
 use FileNotFoundException;
 use WpOrg\Requests;
 
@@ -54,8 +59,18 @@ abstract class common
     public static string $folder_suffix;
 
     /**
+     * @var string Time zone string
+     */
+    public static string $time_zone_str;
+
+    /**
+     * @var DateTimeZone Time zone objet
+     */
+    public DateTimeZone $time_zone;
+
+    /**
      * common constructor.
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException|DateInvalidTimeZoneException
      */
     public function __construct()
     {
@@ -72,6 +87,8 @@ abstract class common
         $this->files = new files($config['xmltv_path'], [$folder]);
         $this->tv = new tv($channel ?? static::$xmltv_id, $language ?? static::$language);
         $this->session = new Requests\Session();
+        if (!empty(static::$time_zone_str))
+            $this->time_zone = new DateTimeZone(static::$time_zone_str);
     }
 
     /**
@@ -100,7 +117,7 @@ abstract class common
     /**
      * Download and save the original data
      * @param string $url URL
-     * @param int $timestamp Timestamp for the saved file
+     * @param int|DateTimeInterface|null $timestamp Timestamp for the saved file
      * @param string $extension Extension for saved file
      * @param int $timeout HTTP requests timeout in seconds
      * @param array $headers HTTP headers to add to the request
@@ -108,7 +125,7 @@ abstract class common
      * @throws exceptions\ConnectionError
      * @throws exceptions\XMLTVError
      */
-    public function download(string $url, int $timestamp = 0, string $extension = 'html', int $timeout = 10, array $headers = [])
+    public function download(string $url, int|DateTimeInterface|null $timestamp, string $extension = 'html', int $timeout = 10, array $headers = [])
     {
         try
         {
@@ -126,14 +143,14 @@ abstract class common
     /**
      * Download and save the original data if not cached
      * @param string $url URL
-     * @param int|null $timestamp Timestamp for the saved file
+     * @param int|DateTimeInterface|null $timestamp Timestamp for the saved file
      * @param string $extension Extension for saved file
      * @param int $timeout HTTP requests timeout in seconds
      * @param array $headers HTTP headers to add to the request
      * @return string
      * @throws exceptions\ConnectionError|exceptions\XMLTVError
      */
-    public function download_cache(string $url, int $timestamp = null, string $extension = 'html', int $timeout = 10, array $headers = [])
+    public function download_cache(string $url, int|DateTimeInterface|null $timestamp = null, string $extension = 'html', int $timeout = 10, array $headers = [])
     {
         try
         {
@@ -172,14 +189,14 @@ abstract class common
      * Get XMLTV file
      * Wrapper for datagutten\xmltv\tools\common\files with project specific exception
      * @param string $channel XMLTV channel id
-     * @param ?int $timestamp Timestamp for the date to get
+     * @param int|DateTimeInterface|null $timestamp Timestamp for the date to get
      * @param ?string $sub_folder Sub folder of channel folder
      * @param string $extension File extension
      * @param bool $create Create folder
      * @return string File name
      * @throws exceptions\XMLTVError
      */
-    protected function file(string $channel, int $timestamp = null, string $sub_folder = null, string $extension = 'xml', bool $create = false)
+    protected function file(string $channel, int|DateTimeInterface|null $timestamp = null, ?string $sub_folder = null, string $extension = 'xml', bool $create = false)
     {
         try
         {
@@ -192,12 +209,12 @@ abstract class common
     }
 
     /**
+     * @param int|DateTimeInterface $timestamp Timestamp
      * @param string $extension File extension
-     * @param int $timestamp Time stamp
      * @return string File name
      * @throws exceptions\XMLTVError
      */
-    public function local_file(int $timestamp, string $extension = 'html')
+    public function local_file(int|DateTimeInterface $timestamp, string $extension = 'html')
     {
         if (!empty(static::$folder_suffix))
             return $this->file(static::$xmltv_id, $timestamp, 'raw_data_' . static::$folder_suffix, $extension, true);
@@ -206,12 +223,12 @@ abstract class common
     }
 
     /**
+     * @param int|DateTimeInterface $timestamp Timestamp
      * @param string $extension File extension
-     * @param int $timestamp Time stamp
      * @return string
      * @throws FileNotFoundException|exceptions\XMLTVError
      */
-    public function load_local_file(int $timestamp, string $extension = 'html')
+    public function load_local_file(int|DateTimeInterface $timestamp, string $extension = 'html')
     {
         $file = $this->local_file($timestamp, $extension);
         if(file_exists($file))
@@ -235,6 +252,31 @@ abstract class common
     }
 
     /**
+     * @param int|DateTimeImmutable|null $day
+     * @return array{DateTimeImmutable, DateTimeImmutable}
+     * @throws exceptions\GrabberException
+     */
+    public function day_arg(int|DateTimeInterface|null $day = null): array
+    {
+        $day = BaseElement::parseTime($day, $this->time_zone);
+        $day = $day->setTimezone($this->time_zone);
+        $day_start = $day->setTime(0, 0);
+        $day_end = $day->setTime(23, 59, 59, 59);
+        return [$day_start, $day_end];
+    }
+
+    /**
+     * Parse timestamp and convert to correct time zone
+     * @param int $timestamp
+     * @return DateTimeImmutable
+     * @throws DateMalformedStringException
+     */
+    public function parse_timestamp_tz(int $timestamp): DateTimeImmutable
+    {
+        return new DateTimeImmutable(sprintf('@%d', $timestamp))->setTimezone($this->time_zone);
+    }
+
+    /**
      * @param int $timestamp Time stamp for the day to grab
      * @return ?string File name
      * @codeCoverageIgnore
@@ -244,12 +286,12 @@ abstract class common
 
     /**
      * Save XML file
-     * @param int $timestamp
+     * @param int|DateTimeInterface $timestamp
      * @return ?string File name
-     * @throws XMLTVError
+     * @throws exceptions\XMLTVError
      * @throws exceptions\GrabberException No programs found
      */
-    public function save_file(int $timestamp): ?string
+    public function save_file(int|DateTimeInterface $timestamp): ?string
     {
         $file = $this->file(static::$xmltv_id, $timestamp, null, 'xml', true);
         $count = $this->tv->xml->{'programme'}->count();

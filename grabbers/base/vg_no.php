@@ -5,17 +5,20 @@ namespace datagutten\xmltv\grabbers\base;
 use datagutten\tools\files\files as file_tools;
 use datagutten\xmltv\grabbers\exceptions;
 use datagutten\xmltv\tools\build\programme;
+use DateInterval;
 use DateTime;
+use DateTimeInterface;
 use Symfony\Component\Process\Process;
 
 abstract class vg_no extends common
 {
     public static string $slug;
     public static string $language = 'nb';
+    public static string $time_zone_str = 'Europe/Oslo';
 
-    public static function get_url(string $slug, int $timestamp)
+    public static function get_url(string $slug, DateTimeInterface $day)
     {
-        return sprintf('https://tvguide.vg.no/kanal/%s/%s', $slug, date('Y-m-d', $timestamp));
+        return sprintf('https://tvguide.vg.no/kanal/%s/%s', $slug, $day->format('Y-m-d'));
     }
 
     protected static function get_data($html): array
@@ -49,13 +52,11 @@ abstract class vg_no extends common
 
     function grab(?int $timestamp = null): string
     {
-        if (empty($timestamp))
-            $timestamp = strtotime('midnight');
+        list($day_start, $day_end) = $this->day_arg($timestamp);
+        $this->tv->source(self::get_url(static::$slug, $day_start));
+        $yesterday = $day_start->sub(new DateInterval('P1D'));
 
-        list($day_start, $day_end) = self::day_start_end($timestamp);
-        $this->tv->xml->addAttribute('source-info-url', self::get_url(static::$slug, $timestamp));
-
-        foreach (array(strtotime('-1 day', $timestamp), $timestamp) as $day)
+        foreach ([$yesterday, $day_start] as $day)
         {
             $url = self::get_url(static::$slug, $day);
             $html = $this->download_cache($url, $day, 'html', 30);
@@ -63,10 +64,8 @@ abstract class vg_no extends common
             $data = json_decode($matches[1], true);
             foreach ($data['props']['pageProps']['initialTvSchedule']['listings'] as $program)
             {
-                if (isset($program_start) && strtotime($program['startsAt']) <= $program_start)
-                    continue;
-                $program_start = strtotime($program['startsAt']);
-                $program_end = strtotime($program['endsAt']);
+                $program_start = new DateTime($program['startsAt']);
+                $program_end = new DateTime($program['endsAt']);
 
                 if ($program_start < $day_start)
                     continue;
@@ -125,7 +124,7 @@ abstract class vg_no extends common
             if (empty($programme))
                 unlink($this->local_file($day));
         }
-        return $this->save_file($timestamp);
+        return $this->save_file($day_start);
     }
 
     public static function parse_js_array($array, $name)

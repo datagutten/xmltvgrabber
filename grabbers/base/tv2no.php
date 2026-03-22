@@ -4,6 +4,8 @@ namespace datagutten\xmltv\grabbers\base;
 
 use datagutten\xmltv\grabbers\exceptions;
 use datagutten\xmltv\tools\build\programme;
+use DateTimeImmutable;
+use DateTimeInterface;
 
 
 abstract class tv2no extends common
@@ -14,8 +16,9 @@ abstract class tv2no extends common
     public static string $slug;
     public static string $language = 'nb';
     public static bool $refetch = true;
+    public static string $time_zone_str = 'Europe/Oslo';
 
-    public function local_file(int $timestamp, $extension = 'html')
+    public function local_file(int|DateTimeInterface $timestamp, $extension = 'html'): string
     {
         return $this->file('tv2.no', $timestamp, 'raw_data', $extension, true);
     }
@@ -65,14 +68,16 @@ abstract class tv2no extends common
                 foreach ($channel['programs'] as $program)
                 {
                     $program_start = strtotime($program['startTime']);
+                    $program_start_obj = new DateTimeImmutable($program['startTime'], $this->time_zone);
+                    $program_end_obj = new DateTimeImmutable($program['endTime'], $this->time_zone);
 
                     if ($program_start < $day_start)
                         continue;
                     if ($program_start > $day_end)
                         break 2;
 
-                    $programme = new programme($program_start, $this->tv);
-                    $programme->stop(strtotime($program['endTime']));
+                    $programme = new programme($program_start_obj, $this->tv);
+                    $programme->stop($program_end_obj);
 
                     if (!empty($program['title']))
                         $programme->title($program['title'], 'nb');
