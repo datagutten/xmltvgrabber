@@ -4,8 +4,8 @@
 namespace datagutten\xmltv\grabbers;
 
 
-class discovery_max_no extends base\DiscoveryBaseNO
+class discovery_max_no extends base\tv2no
 {
-    protected static string $channel_slug = 'max';
+    public static string $slug = "MAX";
     public static string $xmltv_id = 'max.no';
 }
