@@ -28,10 +28,21 @@ foreach ($grabbers as $grabber_class) {
         /**
          * @var $grabber grabbers\base\common
          */
-        $grabber = new $grabber_class;
         try
         {
+            $grabber = new $grabber_class;
             $file = $grabber->grab($timestamp);
+        }
+        catch (grabbers\exceptions\ConnectionError $e)
+        {
+            if ($e->getPrevious()::class == WpOrg\Requests\Exception\Http\Status429::class)
+            {
+                unset($grabbers[$grabber_class::$xmltv_id]);
+                printf("Too many requests, removed grabber %s\n", $grabber_class::$xmltv_id);
+            }
+            else
+                echo $e->getMessage() . "\n";
+            continue;
         }
         catch (grabbers\exceptions\GrabberException $e)
         {
