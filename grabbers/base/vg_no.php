@@ -15,6 +15,7 @@ abstract class vg_no extends common
     public static string $slug;
     public static string $language = 'nb';
     public static string $time_zone_str = 'Europe/Oslo';
+    public static string $folder_suffix = 'vg';
 
     public static function get_url(string $slug, DateTimeInterface $day)
     {
