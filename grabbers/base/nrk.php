@@ -9,6 +9,7 @@ use datagutten\xmltv\grabbers\exceptions\GrabberException;
 use datagutten\xmltv\tools\build\programme;
 use DateInterval;
 use DateTimeImmutable;
+use DateTimeInterface;
 use Exception;
 
 /**
@@ -28,17 +29,24 @@ abstract class nrk extends common
         'nrksuper.nrk.no' => 'nrksuper',
     ];
 
+    public static function get_url(string $channel, DateTimeInterface $day): string
+    {
+        return sprintf('https://psapi.nrk.no/epg/%s?date=%s', $channel, $day->format('Y-m-d'));
+    }
+
     function grab(?int $timestamp = null): ?string
     {
         $channel = self::$channels[static::$xmltv_id];
         list($day_start, $day_end) = $this->day_arg($timestamp);
+        $this->tv->source(self::get_url($channel, $day_start));
+
         $yesterday = $day_start->sub(new DateInterval('P1D'));
 
         /** @var DateTimeImmutable $day */
         foreach ([$yesterday, $day_start] as $day)
         {
             $timestamp = $day->getTimestamp() + 3600;
-            $url = sprintf('https://psapi.nrk.no/epg/%s?date=%s', $channel, $day->format('Y-m-d'));
+            $url = static::get_url($channel, $day);
             $data = $this->download_cache($url, $timestamp, 'json');
 
             $info = json_decode($data, true);
@@ -77,7 +85,7 @@ abstract class nrk extends common
             }
         }
         if(!empty($programme))
-            return $this->save_file($timestamp);
+            return $this->save_file($day_start);
         else
             throw new exceptions\GrabberException(sprintf('No programs found for date %s', $day->format('Y-m-d')));
     }
