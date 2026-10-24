@@ -4,6 +4,7 @@ namespace datagutten\xmltv\grabbers\base;
 
 use datagutten\xmltv\grabbers\exceptions;
 use datagutten\xmltv\tools\build\programme;
+use DateInterval;
 use DateTimeImmutable;
 use DateTimeInterface;
 
@@ -23,19 +24,21 @@ abstract class tv2no extends common
         return $this->file('tv2.no', $timestamp, 'raw_data', $extension, true);
     }
 
+    public static function get_url(DateTimeInterface $day): string
+    {
+        return sprintf('https://tv2no-epg-api.public.tv2.no/epg/days/%s', $day->format('Y/m/d'));
+    }
+
     function grab(?int $timestamp = null): ?string
     {
         if (empty(static::$slug))
             throw new exceptions\GrabberException(sprintf('Channel slug not defined in grabber %s', static::class));
+        list($day_start, $day_end) = $this->day_arg($timestamp);
+        $this->tv->source(self::get_url($day_start));
+        $yesterday = $day_start->sub(new DateInterval('P1D'));
 
-        if (empty($timestamp))
-            $timestamp = strtotime('midnight');
-
-        list($day_start, $day_end) = self::day_start_end($timestamp);
-
-        foreach (array(strtotime('-1 day', $timestamp), $timestamp) as $day)
-        {
-            $url = sprintf('https://tv2no-epg-api.public.tv2.no/epg/days/%s', date('Y/m/d', $day));
+        foreach ([$yesterday, $day_start] as $day) {
+            $url = self::get_url($day);
             $json_raw = $this->download_cache($url, $day, 'json');
             $data = json_decode($json_raw, true);
             $local_file = $this->local_file($day, 'json');
@@ -67,17 +70,16 @@ abstract class tv2no extends common
 
                 foreach ($channel['programs'] as $program)
                 {
-                    $program_start = strtotime($program['startTime']);
-                    $program_start_obj = new DateTimeImmutable($program['startTime'], $this->time_zone);
-                    $program_end_obj = new DateTimeImmutable($program['endTime'], $this->time_zone);
+                    $program_start = new DateTimeImmutable($program['startTime'], $this->time_zone);
+                    $program_end = new DateTimeImmutable($program['endTime'], $this->time_zone);
 
                     if ($program_start < $day_start)
                         continue;
                     if ($program_start > $day_end)
                         break 2;
 
-                    $programme = new programme($program_start_obj, $this->tv);
-                    $programme->stop($program_end_obj);
+                    $programme = new programme($program_start, $this->tv);
+                    $programme->stop($program_end);
 
                     if (!empty($program['title']))
                         $programme->title($program['title'], 'nb');
