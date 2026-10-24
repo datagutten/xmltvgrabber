@@ -32,6 +32,7 @@ abstract class natgeo extends common
             throw new exceptions\GrabberException(sprintf('Invalid language "%s" in grabber %s', static::$language, static::class));
 
         $url = sprintf('https://www.natgeotv.com/%s/%s/%s', $path, static::$slug, date('Ymd', $timestamp));
+        $this->tv->source($url);
         $data = $this->download_cache($url, $timestamp);
 
         @$dom->loadHTML($data);
