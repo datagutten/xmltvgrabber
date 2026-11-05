@@ -1,4 +1,4 @@
-FROM php:8.4 AS builder
+FROM php:8.5 AS builder
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 RUN apt-get update && apt-get install -y libcurl4-openssl-dev unzip
@@ -9,7 +9,7 @@ WORKDIR /app
 
 RUN composer install --no-dev
 
-FROM php:8.4
+FROM php:8.5
 COPY --from=builder /app /app
 WORKDIR /app
 RUN apt-get update && apt-get install -y libcurl4-openssl-dev
