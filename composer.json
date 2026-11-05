@@ -18,7 +18,7 @@
         "datagutten/tools": "^1.8",
         "datagutten/xmltvtools": "dev-master",
         "rmccue/requests": "^2.0",
-        "symfony/process": "^5.3|^6"
+        "symfony/process": "^8.1.10"
     },
     "autoload": {
         "psr-4": {
